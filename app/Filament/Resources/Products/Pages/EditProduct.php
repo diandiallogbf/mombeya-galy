@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Filament\Resources\Products\Pages;
+
+use App\Filament\Resources\Products\ProductResource;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
+
+class EditProduct extends EditRecord
+{
+    protected static string $resource = ProductResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('view')
+                ->label('Voir sur le site')
+                ->icon(Heroicon::OutlinedEye)
+                ->color('gray')
+                ->url(fn () => route('product.show', $this->record), shouldOpenInNewTab: true),
+            DeleteAction::make(),
+        ];
+    }
+}

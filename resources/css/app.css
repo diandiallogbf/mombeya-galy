@@ -1,9 +1,134 @@
 @import 'tailwindcss';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Mombeya Galy brand (from the logo) */
+    --color-brand: #e0144f;
+    --color-brand-dark: #b80e3f;
+    --color-brand-light: #fde8ee;
+    --color-azure: #3fa9f5;
+    --color-ocean: #0b6cb5;
+    --color-navy: #0b2a4a;
+    --color-night: #071c33;
+
+    /* Neutral tones (Cartzilla-like) */
+    --color-ink: #373f50;
+    --color-body: #4b566b;
+    --color-muted: #7d879c;
+    --color-soft: #f3f5f9;
+    --color-line: #e3e9ef;
+    --color-success: #42d697;
+    --color-danger: #f34770;
+
+    --shadow-card: 0 0.3rem 1.525rem -0.375rem rgba(0, 0, 0, 0.1);
+    --shadow-lift: 0 0.5rem 1.125rem -0.5rem rgba(224, 20, 79, 0.9);
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-white font-sans text-body antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-medium text-ink;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .container-shop {
+        @apply mx-auto w-full max-w-[1260px] px-4;
+    }
+
+    .btn {
+        @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-[7px] px-5 py-3 text-[1.0625rem] font-normal transition duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .btn-sm {
+        @apply rounded px-4 py-[.425rem] text-[.8125rem];
+    }
+
+    .btn-primary {
+        @apply bg-brand text-white hover:bg-brand-dark;
+    }
+
+    .btn-shadow {
+        box-shadow: var(--shadow-lift);
+    }
+
+    .btn-secondary {
+        @apply bg-ocean text-white hover:bg-navy;
+    }
+
+    .btn-outline {
+        @apply border border-brand text-brand hover:bg-brand hover:text-white;
+    }
+
+    .btn-outline-dark {
+        @apply border border-line text-ink hover:border-brand hover:text-brand;
+    }
+
+    .form-label {
+        @apply mb-1.5 block text-sm font-medium text-ink;
+    }
+
+    .form-control {
+        @apply block w-full rounded-[.3125rem] border border-[#dae1e7] bg-white px-4 py-2.5 text-[.9375rem] text-body outline-none transition placeholder:text-muted focus:border-azure focus:ring-3 focus:ring-azure/20;
+    }
+
+    .form-error {
+        @apply mt-1 text-sm text-danger;
+    }
+
+    .page-title {
+        @apply bg-navy pt-8 pb-24 text-white lg:pt-10;
+    }
+
+    .page-card {
+        @apply relative -mt-20 rounded-lg bg-white p-4 shadow-lg md:p-6;
+    }
+
+    .section-title {
+        @apply text-center text-2xl font-medium text-ink;
+    }
+
+    .promo-badge {
+        @apply absolute top-3 left-3 z-10 flex size-11 items-center justify-center rounded-full bg-brand text-[.55rem] font-bold tracking-wider text-white uppercase;
+    }
+
+    .prose-shop ul {
+        @apply my-2 list-disc pl-5;
+    }
+
+    .prose-shop p {
+        @apply my-2;
+    }
+}
+
+/* Swiper pagination in brand colours */
+.swiper-pagination-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: #cfd6df;
+    opacity: 1;
+    transition: width 0.3s;
+}
+
+.swiper-pagination-bullet-active {
+    width: 22px;
+    background: var(--color-brand);
 }
