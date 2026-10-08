@@ -125,5 +125,5 @@ Il faudra un hébergeur PHP 8.3 ou plus, puis :
 
 1. Lancer `composer install --no-dev`, puis `npm run build`.
 2. Dans `.env` : `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://ton-domaine`.
-3. Lancer `php artisan migrate --force`, `php artisan storage:link` et `php artisan optimize`.
+3. Lancer `php artisan migrate --force` et `php artisan optimize`. Il n'y a pas de `storage:link` à faire : les images sont enregistrées directement dans `public/storage`.
 4. Configurer le SMTP pour les emails.

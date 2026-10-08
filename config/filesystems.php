@@ -38,9 +38,11 @@ return [
             'report' => false,
         ],
 
+        // Stored straight in public/ (no symlink): shared hosts such as
+        // alwaysdata don't follow the public/storage link.
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => public_path('storage'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,
@@ -73,8 +75,6 @@ return [
     |
     */
 
-    'links' => [
-        public_path('storage') => storage_path('app/public'),
-    ],
+    'links' => [],
 
 ];
