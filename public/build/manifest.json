@@ -1,0 +1,78 @@
+{
+  "_fonts-CwZCcyjb.css": {
+    "file": "assets/fonts-CwZCcyjb.css",
+    "src": "_fonts-CwZCcyjb.css"
+  },
+  "_rubik-300-normal-BUgDINzQ.woff": {
+    "file": "assets/rubik-300-normal-BUgDINzQ.woff",
+    "src": "_rubik-300-normal-BUgDINzQ.woff"
+  },
+  "_rubik-300-normal-CC5OmgBu.woff2": {
+    "file": "assets/rubik-300-normal-CC5OmgBu.woff2",
+    "src": "_rubik-300-normal-CC5OmgBu.woff2"
+  },
+  "_rubik-400-normal-BV1Ho3GG.woff": {
+    "file": "assets/rubik-400-normal-BV1Ho3GG.woff",
+    "src": "_rubik-400-normal-BV1Ho3GG.woff"
+  },
+  "_rubik-400-normal-j0pmKyiQ.woff2": {
+    "file": "assets/rubik-400-normal-j0pmKyiQ.woff2",
+    "src": "_rubik-400-normal-j0pmKyiQ.woff2"
+  },
+  "_rubik-500-normal-1os41rQk.woff2": {
+    "file": "assets/rubik-500-normal-1os41rQk.woff2",
+    "src": "_rubik-500-normal-1os41rQk.woff2"
+  },
+  "_rubik-500-normal-LZYVHeqz.woff": {
+    "file": "assets/rubik-500-normal-LZYVHeqz.woff",
+    "src": "_rubik-500-normal-LZYVHeqz.woff"
+  },
+  "_rubik-700-normal-D-tMm-eS.woff2": {
+    "file": "assets/rubik-700-normal-D-tMm-eS.woff2",
+    "src": "_rubik-700-normal-D-tMm-eS.woff2"
+  },
+  "_rubik-700-normal-KHOtubUA.woff": {
+    "file": "assets/rubik-700-normal-KHOtubUA.woff",
+    "src": "_rubik-700-normal-KHOtubUA.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-Bs6tcqqs.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-DRN8N0d1.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-IAB4Droh.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-CErXDOsT.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-BKW0Z7oy.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "assets": [
+      "assets/fa-brands-400-Bs6tcqqs.woff2",
+      "assets/fa-regular-400-DRN8N0d1.woff2",
+      "assets/fa-solid-900-IAB4Droh.woff2",
+      "assets/fa-v4compatibility-CErXDOsT.woff2"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Bj-TO5kZ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-BJTiX8d8.css"
+    ]
+  }
+}
