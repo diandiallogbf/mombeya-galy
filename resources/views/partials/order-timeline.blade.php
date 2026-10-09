@@ -1,11 +1,15 @@
-@use('App\Enums\OrderStatus')
+{{-- Status timeline for a shop order (OrderStatus) or a pressing order (PressingStatus). --}}
+@use('App\Enums\PressingStatus')
 @php
-    $steps = OrderStatus::timeline();
+    $isPressing = $order->status instanceof PressingStatus;
+    $statusEnum = $order->status::class;
+    $steps = $statusEnum::timeline();
     $currentIndex = array_search($order->status, $steps, true);
-    $icons = ['fa-receipt', 'fa-circle-check', 'fa-scissors', 'fa-truck-fast', 'fa-house-circle-check'];
+    $icons = $isPressing ? PressingStatus::icons() : ['fa-receipt', 'fa-circle-check', 'fa-scissors', 'fa-truck-fast', 'fa-house-circle-check'];
+    $cancelled = $order->status->value === ($isPressing ? PressingStatus::Cancelled->value : 'annulee');
 @endphp
 
-@if ($order->status === OrderStatus::Cancelled)
+@if ($cancelled)
     <div class="rounded-lg bg-danger/10 px-4 py-3 text-center text-danger"><i class="fa-solid fa-ban mr-1"></i> Cette commande a été annulée.</div>
 @else
     <ol class="grid grid-cols-5 gap-1 text-center">

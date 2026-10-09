@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\PressingZone;
 use App\Models\Product;
 use App\Models\Slide;
 use Illuminate\View\View;
@@ -33,6 +34,7 @@ class HomeController extends Controller
             'trendWeek' => $trendWeek,
             'trendMonth' => $trendMonth,
             'accessories' => $accessories,
+            'pressingZones' => PressingZone::active()->pluck('name'),
         ]);
     }
 }

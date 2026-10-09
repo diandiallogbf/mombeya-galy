@@ -136,7 +136,7 @@ SVG;
     }
 
     /**
-     * Generic illustrated cover (showrooms, foundation posts…), 800x1000.
+     * Illustrated showroom cover, 800x1000.
      */
     public static function cover(string $kind, int $variant, string $path): string
     {
@@ -144,7 +144,6 @@ SVG;
         $c = $colors[$variant % count($colors)];
         $art = match ($kind) {
             'store' => self::storeArt($c),
-            'heart' => self::heartArt($c),
             default => self::storeArt($c),
         };
 
@@ -184,16 +183,6 @@ SVG;
   <rect x="440" y="450" width="200" height="420" rx="6" fill="#B9CCDD" stroke="#9FB4C8" stroke-width="4"/>
   <circle cx="610" cy="670" r="10" fill="#6B7C8F"/>
   <rect x="140" y="860" width="520" height="20" fill="#AFBCCB"/>
-SVG;
-    }
-
-    private static function heartArt(string $c): string
-    {
-        return <<<SVG
-  <circle cx="400" cy="500" r="300" fill="{$c}" opacity=".1"/>
-  <path d="M400 690 C210 560 170 450 230 380 C290 310 370 340 400 400 C430 340 510 310 570 380 C630 450 590 560 400 690 Z" fill="{$c}"/>
-  <path d="M180 760 Q290 660 400 720 Q510 660 620 760" fill="none" stroke="#0B6CB5" stroke-width="22" stroke-linecap="round"/>
-  <text x="400" y="880" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="6" fill="{$c}">FONDATION</text>
 SVG;
     }
 

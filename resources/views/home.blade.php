@@ -112,6 +112,30 @@
         </a>
     </section>
 
+    {{-- ============ PRESSING ============ --}}
+    <section class="container-shop mt-10">
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-navy to-ocean px-6 py-8 text-white md:px-10">
+            <div class="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-azure/20"></div>
+            <div class="relative flex flex-col items-start gap-6 md:flex-row md:items-center">
+                <span class="flex size-16 shrink-0 items-center justify-center rounded-full bg-white/10 text-3xl"><i class="fa-solid fa-soap"></i></span>
+                <div class="flex-1">
+                    <p class="text-xs font-bold uppercase tracking-[.2em] text-azure">Nouveau · Mombeya Galy Pressing</p>
+                    <h2 class="mt-1 text-2xl font-medium text-white">Vos tenues lavées, amidonnées et repassées</h2>
+                    <p class="mt-1 text-sm text-white/75">
+                        @if ($pressingZones->isNotEmpty())
+                            Collecte et livraison à domicile à {{ $pressingZones->join(', ', ' et ') }} ·
+                        @endif
+                        Dépôt gratuit en showroom · Prêt en {{ setting('pressing_delay_text') }}
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{{ route('pressing.create') }}" class="btn btn-primary btn-sm">Réserver un enlèvement</a>
+                    <a href="{{ route('pressing.index') }}" class="btn btn-sm border border-white/40 text-white hover:bg-white hover:text-navy">Voir les tarifs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- ============ TENDANCE DU MOIS ============ --}}
     @if ($trendMonth->isNotEmpty())
         <section class="container-shop mt-14">

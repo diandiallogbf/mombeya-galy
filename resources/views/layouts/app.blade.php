@@ -74,7 +74,7 @@
                 @php
                     $links = [
                         ['Accueil', route('home'), request()->routeIs('home'), false],
-                        ['Fondation Mombeya Galy', route('foundation.index'), request()->routeIs('foundation.*'), true],
+                        ['Pressing', route('pressing.index'), request()->routeIs('pressing.*'), true],
                         ['Prestige', route('shop.prestige'), request()->routeIs('shop.prestige'), false],
                     ];
                 @endphp
@@ -157,7 +157,7 @@
                     @foreach ($menuCategories as $menuCategory)
                         <a href="{{ route('shop.category', $menuCategory) }}" class="flex items-center gap-3 py-2 hover:text-brand"><i class="{{ $menuCategory->icon ?: 'fa-solid fa-tag' }} w-5 text-center text-brand"></i>{{ $menuCategory->name }}</a>
                     @endforeach
-                    <a href="{{ route('foundation.index') }}" class="flex items-center gap-3 py-2 hover:text-brand"><i class="fa-solid fa-hands-holding-child w-5 text-center text-brand"></i>Fondation Mombeya Galy</a>
+                    <a href="{{ route('pressing.index') }}" class="flex items-center gap-3 py-2 font-medium hover:text-brand"><i class="fa-solid fa-soap w-5 text-center text-brand"></i>Mombeya Galy Pressing</a>
                     <a href="{{ route('shop.prestige') }}" class="flex items-center gap-3 py-2 hover:text-brand"><i class="fa-solid fa-award w-5 text-center text-brand"></i>Mombeya Galy Prestige</a>
                     <a href="{{ route('shop.index') }}" class="flex items-center gap-3 py-2 hover:text-brand"><i class="fa-solid fa-store w-5 text-center text-brand"></i>Boutique</a>
                     <a href="{{ route('shop.news') }}" class="flex items-center gap-3 py-2 hover:text-brand"><i class="fa-solid fa-circle-plus w-5 text-center text-brand"></i>Nouveautés</a>
@@ -251,7 +251,7 @@
                     <a href="{{ route('shop.prestige') }}" class="hover:text-white">Prestige</a>
                     <a href="{{ route('tracking') }}" class="hover:text-white">Suivi de commande</a>
                     <a href="{{ route('showrooms') }}" class="hover:text-white">Nos showrooms</a>
-                    <a href="{{ route('foundation.index') }}" class="hover:text-white">Fondation</a>
+                    <a href="{{ route('pressing.index') }}" class="hover:text-white">Pressing</a>
                 </div>
 
                 <div class="flex flex-col items-center justify-between gap-4 md:flex-row">

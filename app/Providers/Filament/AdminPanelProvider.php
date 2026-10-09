@@ -42,9 +42,9 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
                 NavigationGroup::make('Ventes'),
+                NavigationGroup::make('Pressing'),
                 NavigationGroup::make('Catalogue'),
                 NavigationGroup::make('Contenu du site'),
-                NavigationGroup::make('Fondation'),
                 NavigationGroup::make('Paramètres'),
             ])
             ->navigationItems([

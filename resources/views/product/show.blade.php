@@ -53,6 +53,14 @@
 
                     @include('product.partials.buy-box')
 
+                    @if ($product->category?->slug !== 'accessoires')
+                        <a href="{{ route('pressing.index') }}" class="mt-4 flex items-center gap-3 rounded-lg bg-azure/10 p-3 text-sm text-ocean transition hover:bg-azure/20">
+                            <i class="fa-solid fa-soap text-lg"></i>
+                            <span><strong>Entretien conseillé :</strong> confiez cette tenue à Mombeya Galy Pressing.</span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs"></i>
+                        </a>
+                    @endif
+
                     {{-- Accordion --}}
                     <div class="mt-6 divide-y divide-line border-y border-line" x-data="{ panel: 'info' }">
                         <div>

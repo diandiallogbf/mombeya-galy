@@ -42,7 +42,7 @@ class ShopTest extends TestCase
     {
         foreach (['/', '/boutique', '/boutique?tri=croissant&q=boubou', '/nouveautes', '/promotions', '/prestige', '/categorie/homme',
             '/produit/'.$this->product->slug, '/produit/'.$this->product->slug.'/apercu', '/panier', '/suivi-commande',
-            '/showrooms', '/videos', '/fondation', '/fondation/demande-aide', '/connexion', '/mot-de-passe/oublie'] as $url) {
+            '/showrooms', '/videos', '/pressing', '/pressing/reserver', '/connexion', '/mot-de-passe/oublie'] as $url) {
             $this->get($url)->assertOk();
         }
 

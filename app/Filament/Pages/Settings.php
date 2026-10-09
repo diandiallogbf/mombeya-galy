@@ -81,11 +81,21 @@ class Settings extends Page
                         TextInput::make('youtube_url')->label('YouTube')->url(),
                         TextInput::make('twitter_url')->label('X (Twitter)')->url(),
                     ]),
-                Section::make('Fondation')
+                Section::make('Pressing')
+                    ->description('Les services, tarifs et zones de collecte se gèrent dans le menu Pressing.')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('foundation_donation_name')->label('Nom du bénéficiaire des dons'),
-                        TextInput::make('foundation_donation_number')->label('Numéro pour les dons'),
+                        TextInput::make('pressing_express_percent')->label('Supplément express')->numeric()->minValue(0)->maxValue(300)->suffix('%')->required(),
+                        TextInput::make('pressing_delay_text')->label('Délai standard affiché')->placeholder('48h')->required(),
+                        TextInput::make('pressing_slots')
+                            ->label('Créneaux de collecte')
+                            ->helperText('Séparés par des virgules, ex : 08:00 – 12:00, 12:00 – 16:00')
+                            ->required()
+                            ->columnSpanFull(),
+                        TextInput::make('pressing_offer_text')
+                            ->label('Message pressing après un achat')
+                            ->helperText('Affiché sur la page de confirmation de commande. Laisser vide pour le masquer.')
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

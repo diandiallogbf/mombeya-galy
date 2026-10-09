@@ -42,6 +42,10 @@ php artisan test                   # lance les tests automatiques
 | Changer les bannières de l'accueil | Admin → Contenu du site → Bannières d'accueil |
 | Téléphone, WhatsApp, numéros Orange Money / MTN, taux USD/EUR, réseaux sociaux | Admin → Paramètres → Paramètres de la boutique |
 | Frais et délais de livraison | Admin → Paramètres → Zones de livraison |
+| Traiter les réservations pressing | Admin → Pressing → Commandes pressing |
+| Tarifs du pressing | Admin → Pressing → Services & tarifs |
+| Ouvrir la collecte dans une nouvelle commune | Admin → Pressing → Zones de collecte (activer la zone) |
+| Showrooms qui acceptent les dépôts pressing | Admin → Contenu du site → Showrooms (« Point de dépôt pressing ») |
 | Couleurs du site | `resources/css/app.css` (bloc `@theme`), puis `npm run build` |
 | Logo | `public/images/logo.png` (horizontal) et `public/images/favicon.png` |
 

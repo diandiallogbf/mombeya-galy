@@ -43,4 +43,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Order::class);
     }
+
+    public function pressingOrders(): HasMany
+    {
+        return $this->hasMany(PressingOrder::class);
+    }
 }

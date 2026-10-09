@@ -55,6 +55,7 @@ class ShowroomResource extends Resource
                 Fieldset::make('Horaires d\'ouverture')->columns(2)->columnSpanFull()->schema($days),
                 TextInput::make('position')->label('Ordre')->numeric()->default(0),
                 Toggle::make('is_active')->label('Visible')->default(true)->inline(false),
+                Toggle::make('accepts_pressing')->label('Point de dépôt pressing')->helperText('Les clients peuvent y déposer leurs vêtements.')->default(true),
             ]);
     }
 
@@ -67,6 +68,7 @@ class ShowroomResource extends Resource
                 ImageColumn::make('image')->label('Photo')->disk('public')->imageHeight(56)->imageWidth(45),
                 TextColumn::make('name')->label('Nom')->searchable()->description(fn (Showroom $record) => $record->address),
                 TextColumn::make('phone')->label('Téléphone'),
+                ToggleColumn::make('accepts_pressing')->label('Dépôt pressing'),
                 ToggleColumn::make('is_active')->label('Visible'),
             ])
             ->recordActions([EditAction::make(), DeleteAction::make()]);

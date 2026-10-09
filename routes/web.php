@@ -5,9 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\FoundationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\PressingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShowroomController;
@@ -40,11 +40,13 @@ Route::get('/suivi-commande', [TrackingController::class, 'show'])->name('tracki
 Route::get('/showrooms', [ShowroomController::class, 'index'])->name('showrooms');
 Route::redirect('/contact', '/showrooms');
 Route::get('/videos', [VideoController::class, 'index'])->name('videos');
-Route::get('/fondation', [FoundationController::class, 'index'])->name('foundation.index');
-Route::get('/fondation/demande-aide', [FoundationController::class, 'aidForm'])->name('foundation.aid');
-Route::post('/fondation/demande-aide', [FoundationController::class, 'aidStore'])->name('foundation.aid.store')->middleware('throttle:5,1');
-Route::get('/fondation/{post}', [FoundationController::class, 'show'])->name('foundation.show');
 Route::get('/devise/{code}', CurrencyController::class)->name('currency');
+
+// Pressing
+Route::get('/pressing', [PressingController::class, 'index'])->name('pressing.index');
+Route::get('/pressing/reserver', [PressingController::class, 'create'])->name('pressing.create');
+Route::post('/pressing/reserver', [PressingController::class, 'store'])->name('pressing.store')->middleware('throttle:10,1');
+Route::get('/pressing/{pressingOrder}/confirmation', [PressingController::class, 'confirmation'])->name('pressing.confirmation');
 
 // Customer accounts
 Route::middleware('guest')->group(function () {
@@ -62,4 +64,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/mon-compte', [AccountController::class, 'index'])->name('account.index');
     Route::put('/mon-compte', [AccountController::class, 'update'])->name('account.update');
     Route::get('/mon-compte/commandes/{order}', [AccountController::class, 'order'])->name('account.order');
+    Route::get('/mon-compte/pressing/{pressingOrder}', [AccountController::class, 'pressingOrder'])->name('account.pressing');
 });

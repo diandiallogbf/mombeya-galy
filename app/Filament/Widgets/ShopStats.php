@@ -3,7 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\OrderStatus;
+use App\Enums\PressingStatus;
 use App\Models\Order;
+use App\Models\PressingOrder;
 use App\Models\Product;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -41,6 +43,14 @@ class ShopStats extends StatsOverviewWidget
                 ->description(Product::where('is_active', true)->count().' produits en ligne')
                 ->descriptionIcon('heroicon-m-archive-box')
                 ->color('danger'),
+            Stat::make('Pressing à traiter', PressingOrder::where('status', PressingStatus::Requested)->count())
+                ->description(PressingOrder::whereDate('pickup_date', today())->count().' collecte(s) prévue(s) aujourd\'hui')
+                ->descriptionIcon('heroicon-m-truck')
+                ->color('warning'),
+            Stat::make('Pressing du mois', money(PressingOrder::where('status', '!=', PressingStatus::Cancelled)->where('created_at', '>=', now()->startOfMonth())->sum('total'), 'GNF'))
+                ->description(PressingOrder::where('created_at', '>=', now()->startOfMonth())->count().' réservation(s) ce mois-ci')
+                ->descriptionIcon('heroicon-m-sparkles')
+                ->color('info'),
         ];
     }
 }

@@ -70,6 +70,35 @@
                         <div class="mt-5">{{ $orders->links() }}</div>
                     @endif
                 </div>
+
+                <div class="mt-6 rounded-lg bg-white p-6 shadow-lg">
+                    <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+                        <h2 class="text-lg"><i class="fa-solid fa-soap mr-1 text-brand"></i> Mes réservations pressing</h2>
+                        <a href="{{ route('pressing.create') }}" class="btn btn-sm btn-outline">Nouvelle réservation</a>
+                    </div>
+                    @if ($pressingOrders->isEmpty())
+                        <p class="py-4 text-center text-sm text-muted">Aucune réservation pour le moment.</p>
+                    @else
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="border-b border-line text-xs uppercase text-muted">
+                                    <tr><th class="py-2">Référence</th><th>Date</th><th>Articles</th><th>Statut</th><th class="text-right">Total</th></tr>
+                                </thead>
+                                <tbody class="divide-y divide-line">
+                                    @foreach ($pressingOrders as $pressingOrder)
+                                        <tr>
+                                            <td class="py-3"><a href="{{ route('account.pressing', $pressingOrder) }}" class="font-mono font-medium text-brand hover:underline">{{ $pressingOrder->reference }}</a></td>
+                                            <td>{{ $pressingOrder->created_at->format('d/m/Y') }}</td>
+                                            <td>{{ $pressingOrder->items_count }}</td>
+                                            <td>@include('partials.status-badge', ['status' => $pressingOrder->status])</td>
+                                            <td class="text-right">{{ money($pressingOrder->total, 'GNF') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
             </section>
         </div>
     </div>

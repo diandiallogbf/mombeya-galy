@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\PressingOrder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,6 +17,7 @@ class AccountController extends Controller
         return view('account.index', [
             'user' => $user,
             'orders' => $user->orders()->withCount('items')->latest()->paginate(10),
+            'pressingOrders' => $user->pressingOrders()->withCount('items')->latest()->take(10)->get(),
         ]);
     }
 
@@ -36,5 +38,12 @@ class AccountController extends Controller
         abort_unless($order->user_id === $request->user()->id, 404);
 
         return view('account.order', ['order' => $order->load('items')]);
+    }
+
+    public function pressingOrder(Request $request, PressingOrder $pressingOrder): View
+    {
+        abort_unless($pressingOrder->user_id === $request->user()->id, 404);
+
+        return view('account.pressing', ['order' => $pressingOrder->load('items')]);
     }
 }

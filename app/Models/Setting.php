@@ -25,7 +25,8 @@ class Setting extends Model
             $stored = [];
         }
 
-        return array_merge(config('shop.defaults', []), array_filter($stored, fn ($v) => $v !== null && $v !== ''));
+        // A value saved empty in the admin overrides the default (e.g. to hide a social icon).
+        return array_merge(config('shop.defaults', []), $stored);
     }
 
     public static function get(string $key, mixed $default = null): mixed

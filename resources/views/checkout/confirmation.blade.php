@@ -32,6 +32,14 @@
                    class="btn flex-1 bg-[#25D366] text-white hover:bg-[#1da851]"><i class="fa-brands fa-whatsapp"></i> Confirmer sur WhatsApp</a>
                 <a href="{{ route('shop.index') }}" class="btn btn-outline flex-1">Continuer mes achats</a>
             </div>
+
+            @if (setting('pressing_offer_text'))
+                <a href="{{ route('pressing.index') }}" class="mt-6 flex items-center gap-4 rounded-lg bg-gradient-to-r from-navy to-ocean p-5 text-sm text-white">
+                    <i class="fa-solid fa-soap text-3xl text-azure"></i>
+                    <span class="flex-1">{{ setting('pressing_offer_text') }}</span>
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </a>
+            @endif
         </div>
     </div>
 @endsection

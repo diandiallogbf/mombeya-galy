@@ -18,7 +18,7 @@ Il reprend la structure et l'ergonomie de 6point9.sn, aux couleurs du logo (roug
 
 - **En-tête :**
   - barre du haut : téléphone, suivi de commande, devise ;
-  - menu : Accueil, Fondation, Prestige, Boutique (avec la liste des catégories), Vidéos, Nos showrooms ;
+  - menu : Accueil, Pressing, Prestige, Boutique (avec la liste des catégories), Vidéos, Nos showrooms ;
   - icônes compte et panier, avec un mini-panier au survol.
 - **Mobile :** menu latéral, barre d'outils fixe en bas de l'écran.
 - **Accueil :**
@@ -43,7 +43,7 @@ Il reprend la structure et l'ergonomie de 6point9.sn, aux couleurs du logo (roug
   - Une **référence de commande** est créée, avec les instructions de paiement et un bouton WhatsApp.
 - **Suivi de commande :** recherche par référence, frise de l'avancement.
 - **Showrooms :** horaires et lien « Localiser » vers Google Maps.
-- **Fondation :** articles, informations pour les dons, formulaire de demande d'aide.
+- **Pressing (ajouté le 9 octobre, remplace la Fondation) :** tarifs par catégorie (Homme, Femme, Spécial bazin, Maison), formules d'abonnement, réservation en ligne avec collecte à domicile ou dépôt en showroom, option express, total calculé en direct, référence `PR…` suivie sur la page « Suivi de commande ».
 - **Vidéos :** liens YouTube, lus dans une fenêtre.
 - **Espace client :** inscription, connexion, mot de passe oublié, historique des commandes.
 - **Bouton WhatsApp** flottant sur toutes les pages, et page 404 personnalisée.
@@ -69,21 +69,23 @@ Il reprend la structure et l'ergonomie de 6point9.sn, aux couleurs du logo (roug
   - duplication de produit, actions groupées.
 - **Catégories :** l'ordre se règle par glisser-déposer. Pour chaque catégorie, on choisit si elle apparaît sur l'accueil et dans le menu.
 - **Contenu du site :** bannières d'accueil, showrooms (avec horaires), vidéos.
-- **Fondation :** actions de la fondation, demandes d'aide.
+- **Pressing :** commandes pressing (onglets par statut, WhatsApp client), services et tarifs, zones de collecte (Ratoma active, Dixinn, Kaloum, Matam et Matoto prêtes à activer).
 - **Zones de livraison :** frais et délais.
 - **Clients & comptes :** donner ou retirer l'accès administrateur.
 - **Paramètres de la boutique :**
   - téléphone, WhatsApp, email ;
   - numéros marchands Orange Money et MTN ;
   - taux USD et EUR ;
-  - réseaux sociaux, textes du pied de page, fondation.
+  - réseaux sociaux, textes du pied de page ;
+  - pressing : supplément express, délai, créneaux de collecte, message après un achat.
 
 ### Données de démonstration
 
 - 124 produits répartis dans 10 catégories.
 - 8 showrooms (Kaloum, Kipé, Dixinn, Cosa, Lambanyi, Matoto, Nongo, Labé).
 - 9 zones de livraison (Kaloum, Dixinn, Matam, Ratoma, Matoto, banlieue, intérieur du pays, international DHL, retrait gratuit en showroom).
-- 4 bannières d'accueil, 6 articles de fondation, 14 commandes d'exemple.
+- 4 bannières d'accueil, 14 commandes d'exemple.
+- Pressing : 17 services (dont 3 formules) et 5 zones de collecte.
 
 ## Vérifications effectuées
 

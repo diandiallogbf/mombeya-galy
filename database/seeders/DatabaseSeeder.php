@@ -5,10 +5,13 @@ namespace Database\Seeders;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
+use App\Enums\PressingStatus;
 use App\Models\Category;
 use App\Models\DeliveryZone;
-use App\Models\FoundationPost;
 use App\Models\Order;
+use App\Models\PressingOrder;
+use App\Models\PressingService;
+use App\Models\PressingZone;
 use App\Models\Product;
 use App\Models\Showroom;
 use App\Models\Slide;
@@ -37,7 +40,7 @@ class DatabaseSeeder extends Seeder
         mt_srand(2026);
 
         $disk = Storage::disk('public');
-        foreach (['products', 'categories', 'slides', 'showrooms', 'foundation'] as $dir) {
+        foreach (['products', 'categories', 'slides', 'showrooms'] as $dir) {
             $disk->deleteDirectory($dir);
         }
 
@@ -47,8 +50,9 @@ class DatabaseSeeder extends Seeder
         $this->deliveryZones();
         $this->showrooms();
         $this->slides();
-        $this->foundation();
         $this->orders();
+        $this->call(PressingSeeder::class);
+        $this->pressingOrders();
     }
 
     private function users(): void
@@ -250,6 +254,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => $lat,
                 'longitude' => $lng,
                 'opening_hours' => $hours,
+                'accepts_pressing' => ! str_contains($name, 'Labé'),
                 'position' => $i + 1,
                 'is_active' => true,
             ]);
@@ -276,27 +281,53 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    private function foundation(): void
+    /**
+     * A few demo pressing bookings so the admin screens are not empty.
+     */
+    private function pressingOrders(): void
     {
-        $posts = [
-            ['Remise de kits scolaires à Kaloum', 12],
-            ['Soutien aux élèves de Mombeya', 40],
-            ['Tournoi de football Mombeya Galy', 75],
-            ['Distribution de repas pendant le Ramadan', 160],
-            ['Fournitures scolaires 2025-2026', 390],
-            ['Appui aux artisans tailleurs de Labé', 220],
-        ];
-        foreach ($posts as $i => [$title, $daysAgo]) {
-            FoundationPost::updateOrCreate(['title' => $title], [
-                'cover' => PlaceholderArt::cover('heart', $i, "foundation/post-{$i}.svg"),
-                'gallery' => [],
-                'content' => '<p>La Fondation Mombeya Galy poursuit son engagement auprès des communautés guinéennes. '
-                    .'Cette action a été rendue possible grâce à la générosité de nos clients et partenaires.</p>'
-                    .'<p>Merci à toutes celles et ceux qui participent aux dons via Orange Money, MTN MoMo, Western Union ou Ria. '
-                    .'Ensemble, nous construisons une Guinée plus solidaire.</p>',
-                'published_at' => now()->subDays($daysAgo)->toDateString(),
-                'is_published' => true,
+        $services = PressingService::where('category', '!=', 'formule')->get();
+        $zone = PressingZone::active()->first();
+        $dropPoint = Showroom::where('accepts_pressing', true)->first();
+        $statuses = [PressingStatus::Requested, PressingStatus::Requested, PressingStatus::Collected, PressingStatus::Cleaning, PressingStatus::Ready, PressingStatus::Delivered];
+        $customers = [['Mariama Camara', '+224 660 30 30 30'], ['Ibrahima Sow', '+224 664 22 33 44'], ['Alpha Oumar Baldé', '+224 628 12 12 12']];
+
+        foreach ($statuses as $i => $status) {
+            [$name, $phone] = $customers[$i % count($customers)];
+            $collecte = $zone && $i % 3 !== 2;
+            $express = $i === 1;
+            $picked = $services->random(mt_rand(1, 3));
+            $subtotal = 0;
+            $lines = [];
+            foreach ($picked as $service) {
+                $qty = mt_rand(1, 4);
+                $subtotal += $service->price * $qty;
+                $lines[] = ['pressing_service_id' => $service->id, 'service_name' => $service->name, 'quantity' => $qty, 'unit_price' => $service->price, 'total' => $service->price * $qty];
+            }
+            $expressFee = $express ? (int) round($subtotal / 2) : 0;
+            $fee = $collecte ? $zone->fee : 0;
+
+            $order = PressingOrder::create([
+                'customer_name' => $name,
+                'customer_phone' => $phone,
+                'mode' => $collecte ? 'collecte' : 'depot',
+                'pressing_zone_id' => $collecte ? $zone->id : null,
+                'zone_name' => $collecte ? $zone->name : null,
+                'address' => $collecte ? ['Kipé', 'Lambanyi', 'Nongo Taady', 'Cosa'][$i % 4] : null,
+                'showroom_id' => $collecte ? null : $dropPoint?->id,
+                'showroom_name' => $collecte ? null : $dropPoint?->name,
+                'pickup_date' => $collecte ? today()->addDays($i % 3)->toDateString() : null,
+                'pickup_slot' => $collecte ? '08:00 – 12:00' : null,
+                'express' => $express,
+                'subtotal' => $subtotal,
+                'express_fee' => $expressFee,
+                'collection_fee' => $fee,
+                'total' => $subtotal + $expressFee + $fee,
+                'payment_method' => PaymentMethod::CashOnDelivery,
+                'payment_status' => $status === PressingStatus::Delivered ? PaymentStatus::Paid : PaymentStatus::Pending,
+                'status' => $status,
             ]);
+            $order->items()->createMany($lines);
         }
     }
 

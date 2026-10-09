@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'image', 'address', 'phone', 'opening_hours', 'latitude', 'longitude', 'position', 'is_active'])]
+#[Fillable(['name', 'image', 'address', 'phone', 'opening_hours', 'latitude', 'longitude', 'accepts_pressing', 'position', 'is_active'])]
 class Showroom extends Model
 {
     public const DAYS = [
@@ -24,6 +24,7 @@ class Showroom extends Model
     {
         return [
             'opening_hours' => 'array',
+            'accepts_pressing' => 'boolean',
             'is_active' => 'boolean',
         ];
     }
