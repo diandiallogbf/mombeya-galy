@@ -15,14 +15,11 @@ php artisan serve --host=127.0.0.1 --port=8010
 
 > Le port 8000 est déjà utilisé par un autre projet (`galyimmo`), d'où le port 8010.
 
-## Comptes de démonstration
+## Comptes
 
-| Rôle | Email | Mot de passe |
-|---|---|---|
-| Administrateur | admin@mombeyagaly.com | MombeyaGaly@2026 |
-| Client | client@exemple.com | client1234 |
+Les données de démonstration créent un compte administrateur et un compte client de test. Leurs identifiants ne figurent volontairement pas dans ce fichier.
 
-**Changez le mot de passe administrateur** dans *Administration → Clients & comptes* avant toute mise en ligne.
+**Changez le mot de passe administrateur** dans *Administration → Clients & comptes*, et supprimez le compte client de test avant toute mise en ligne.
 
 ## Commandes utiles
 

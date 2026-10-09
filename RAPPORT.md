@@ -4,8 +4,7 @@
 
 - Site : **http://127.0.0.1:8010**. Si le PC a redémarré, double-cliquez sur `demarrer.bat`.
 - Administration : **http://127.0.0.1:8010/admin**
-  - Compte : `admin@mombeyagaly.com` / `MombeyaGaly@2026` (**à changer**).
-- Compte client de test : `client@exemple.com` / `client1234`.
+- Un compte administrateur et un compte client de test existent. Leurs identifiants ne sont pas notés ici : **change le mot de passe administrateur** et supprime le compte client de test.
 - Le port 8000 est occupé par ton autre projet `galyimmo`, d'où le port 8010.
 
 **Technique :** Laravel 13.35, Filament 5.10, base SQLite (`database/database.sqlite`), Tailwind CSS 4, Alpine.js, Swiper. Tout le site est en français et les prix sont en **francs guinéens (GNF)**. Un sélecteur permet aussi d'afficher les prix en USD ou en EUR.
