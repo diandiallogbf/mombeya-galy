@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" width="480" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2B2622"/><stop offset="1" stop-color="#2B2622" stop-opacity=".78"/>
+    </linearGradient>
+    <pattern id="p" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="480" height="600" fill="url(#g)"/>
+  <rect width="480" height="600" fill="url(#p)"/>
+  <g transform="translate(36 -18) scale(.68)" opacity=".95">  <path d="M262 170 Q300 205 338 170 L385 176 L548 300 L566 525 L470 545 L470 770 L130 770 L130 545 L34 525 L52 300 L215 176 Z" fill="#FFFFFF"/>
+  <path d="M262 170 Q300 205 338 170 L338 182 Q300 240 262 182 Z" fill="rgba(255,255,255,.55)"/>
+  <path d="M300 205 L300 470" stroke="rgba(255,255,255,.55)" stroke-width="6" stroke-dasharray="14 10"/>
+  <path d="M240 200 Q300 330 360 200" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="6"/>
+  <path d="M130 740 L470 740" stroke="rgba(255,255,255,.55)" stroke-width="5" opacity=".7"/></g>
+</svg>

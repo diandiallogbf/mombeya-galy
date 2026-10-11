@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" width="1200" height="1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="1200" height="1000" fill="#2B2622"/>
+  <path d="M250 1000 L250 420 A350 350 0 0 1 950 420 L950 1000 Z" fill="#3A332D"/>
+  <rect y="900" width="1200" height="100" fill="#000" opacity=".05"/>
+  <g transform="translate(120 120) scale(.95)">  <path d="M250 170 L300 220 L350 170 L410 188 L478 236 L520 470 L466 482 L440 360 L440 760 L160 760 L160 360 L134 482 L80 470 L122 236 L190 188 Z" fill="#FAF6F0"/>
+  <path d="M250 170 L300 220 L350 170 L330 300 L300 260 L270 300 Z" fill="#B08D57"/>
+  <path d="M300 230 L300 760" stroke="#000" stroke-opacity=".18" stroke-width="4"/>
+  <circle cx="300" cy="420" r="9" fill="#B08D57"/><circle cx="300" cy="500" r="9" fill="#B08D57"/>
+  <rect x="190" y="520" width="70" height="10" rx="3" fill="#B08D57" opacity=".8"/>
+  <rect x="340" y="520" width="70" height="10" rx="3" fill="#B08D57" opacity=".8"/></g><g transform="translate(540 160) scale(.95)">  <path d="M262 170 Q300 205 338 170 L385 176 L548 300 L566 525 L470 545 L470 770 L130 770 L130 545 L34 525 L52 300 L215 176 Z" fill="#FAF6F0"/>
+  <path d="M262 170 Q300 205 338 170 L338 182 Q300 240 262 182 Z" fill="#B08D57"/>
+  <path d="M300 205 L300 470" stroke="#B08D57" stroke-width="6" stroke-dasharray="14 10"/>
+  <path d="M240 200 Q300 330 360 200" fill="none" stroke="#B08D57" stroke-width="6"/>
+  <path d="M130 740 L470 740" stroke="#B08D57" stroke-width="5" opacity=".7"/></g>
+</svg>

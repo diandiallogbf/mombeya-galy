@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F7F9FC"/><stop offset="1" stop-color="#E6ECF3"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g)"/>
+    <rect x="0" y="860" width="800" height="140" fill="#D5DDE7"/>
+  <rect x="120" y="230" width="560" height="640" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+  <rect x="120" y="200" width="560" height="100" fill="#2B2622"/>
+  <text x="400" y="265" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" letter-spacing="8" fill="#FFFFFF">MOMBEYA GALY</text>
+  <path d="M110 300 L182.5 300 L182.5 370 Q146 400 110 370 Z" fill="#2B2622"/><path d="M182.5 300 L255 300 L255 370 Q218.5 400 182.5 370 Z" fill="#FFFFFF"/><path d="M255 300 L327.5 300 L327.5 370 Q291 400 255 370 Z" fill="#2B2622"/><path d="M327.5 300 L400 300 L400 370 Q363.5 400 327.5 370 Z" fill="#FFFFFF"/><path d="M400 300 L472.5 300 L472.5 370 Q436 400 400 370 Z" fill="#2B2622"/><path d="M472.5 300 L545 300 L545 370 Q508.5 400 472.5 370 Z" fill="#FFFFFF"/><path d="M545 300 L617.5 300 L617.5 370 Q581 400 545 370 Z" fill="#2B2622"/><path d="M617.5 300 L690 300 L690 370 Q653.5 400 617.5 370 Z" fill="#FFFFFF"/>
+  <rect x="160" y="450" width="220" height="260" rx="6" fill="#DCEBF8" stroke="#9FB4C8" stroke-width="4"/>
+  <path d="M200 700 L200 560 Q230 520 260 560 L260 700 Z" fill="#2B2622" opacity=".7"/>
+  <path d="M290 700 L290 540 Q320 500 350 540 L350 700 Z" fill="#B08D57" opacity=".7"/>
+  <rect x="440" y="450" width="200" height="420" rx="6" fill="#B9CCDD" stroke="#9FB4C8" stroke-width="4"/>
+  <circle cx="610" cy="670" r="10" fill="#6B7C8F"/>
+  <rect x="140" y="860" width="520" height="20" fill="#AFBCCB"/>
+</svg>

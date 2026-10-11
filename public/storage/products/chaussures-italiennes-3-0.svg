@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EEEAE2"/><stop offset="1" stop-color="#E0D9CC"/>
+    </linearGradient>
+    <pattern id="tri" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M0 40 L20 10 L40 40 Z" fill="#4A5A3C" opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="900" fill="url(#bg)"/>
+  <rect y="800" width="600" height="100" fill="url(#tri)"/>
+  <ellipse cx="300" cy="790" rx="210" ry="18" fill="#000" opacity=".06"/>
+    <path d="M90 600 Q96 488 196 478 L292 466 Q342 460 366 500 Q404 556 480 566 Q540 576 540 626 L540 642 L84 642 Q76 622 90 600 Z" fill="#4A5A3C"/>
+  <rect x="80" y="642" width="466" height="30" rx="12" fill="#1F2937"/>
+  <path d="M250 476 L300 520 M276 470 L326 514 M226 484 L276 528" stroke="#B08D57" stroke-width="6" stroke-linecap="round"/>
+  <path d="M100 600 Q300 600 532 612" stroke="#B08D57" stroke-width="4" fill="none" opacity=".7"/>
+  <text x="300" y="865" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" letter-spacing="6" fill="#4A5A3C" opacity=".55" font-weight="700">MOMBEYA GALY</text>
+</svg>

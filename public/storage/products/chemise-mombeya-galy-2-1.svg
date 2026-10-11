@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F1EBE3"/><stop offset="1" stop-color="#E6DCCD"/>
+    </linearGradient>
+    <pattern id="tri" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M0 40 L20 10 L40 40 Z" fill="#8A6A3B" opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="900" fill="url(#bg)"/>
+  <rect y="800" width="600" height="100" fill="url(#tri)"/>
+  <ellipse cx="300" cy="790" rx="210" ry="18" fill="#000" opacity=".06"/>
+    <path d="M245 182 L282 165 L300 200 L318 165 L355 182 L466 232 L516 402 L458 422 L430 322 L430 742 L170 742 L170 322 L142 422 L84 402 L134 232 Z" fill="#8A6A3B"/>
+  <path d="M245 182 L282 165 L300 200 L270 230 Z M355 182 L318 165 L300 200 L330 230 Z" fill="#D6124A"/>
+  <circle cx="300" cy="260" r="7" fill="#D6124A"/><circle cx="300" cy="340" r="7" fill="#D6124A"/>
+  <circle cx="300" cy="420" r="7" fill="#D6124A"/><circle cx="300" cy="500" r="7" fill="#D6124A"/>
+  <circle cx="300" cy="580" r="7" fill="#D6124A"/><circle cx="300" cy="660" r="7" fill="#D6124A"/>
+  <rect x="340" y="300" width="56" height="62" rx="4" fill="none" stroke="#D6124A" stroke-width="4"/>
+  <text x="300" y="865" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" letter-spacing="6" fill="#8A6A3B" opacity=".55" font-weight="700">MOMBEYA GALY</text>
+</svg>
