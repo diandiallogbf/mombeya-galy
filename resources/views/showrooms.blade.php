@@ -1,57 +1,60 @@
 @extends('layouts.app')
 
-@section('title', 'Nos showrooms')
+@section('title', 'Nos maisons')
 
 @section('content')
-    <x-page-header title="Nos showrooms" :breadcrumbs="['Nos showrooms' => null]" light />
+    <x-page-header title="Nos maisons" :breadcrumbs="['Nos maisons' => null]" kicker="Venez nous rencontrer"
+                   subtitle="Essayez nos pièces, rencontrez nos tailleurs et déposez vos vêtements au pressing dans l'une de nos maisons." />
 
-    <div class="container-shop relative -mt-16">
+    <div class="container-shop mt-14">
         @if ($showrooms->isEmpty())
-            <div class="rounded-lg bg-white p-10 text-center text-muted shadow-lg">Nos showrooms seront bientôt listés ici.</div>
+            <p class="py-16 text-center text-muted">Nos maisons seront bientôt présentées ici.</p>
         @else
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($showrooms as $showroom)
-                    <article class="flex flex-col overflow-hidden rounded-lg bg-white shadow-[0_.5rem_2rem_-.5rem_rgba(0,0,0,.18)]">
-                        <img src="{{ $showroom->imageUrl() }}" alt="{{ $showroom->name }}" loading="lazy" class="h-64 w-full object-cover lg:h-72">
-                        <div class="flex flex-1 flex-col p-5">
-                            <h2 class="mb-1 text-lg">{{ $showroom->name }}</h2>
-                            @if ($showroom->address)
-                                <p class="mb-1 text-sm text-muted"><i class="fa-solid fa-location-dot mr-1 text-brand"></i>{{ $showroom->address }}</p>
-                            @endif
-                            @if ($showroom->phone)
-                                <a href="tel:{{ preg_replace('/\s+/', '', $showroom->phone) }}" class="mb-3 text-sm text-body hover:text-brand"><i class="fa-solid fa-phone mr-1 text-brand"></i>{{ $showroom->phone }}</a>
-                            @endif
-                            <ul class="mb-4 space-y-1 text-sm">
-                                @foreach (\App\Models\Showroom::DAYS as $key => $day)
-                                    <li class="flex justify-between">
-                                        <span class="text-ink"><i class="fa-solid fa-chevron-right mr-1 text-[9px] text-muted"></i>{{ $day }}</span>
-                                        <span class="text-[.8125rem] text-muted">{{ $showroom->opening_hours[$key] ?? '—' }}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                            @if ($showroom->mapUrl())
-                                <hr class="mb-4 mt-auto border-line">
-                                <a href="{{ $showroom->mapUrl() }}" target="_blank" rel="noopener" class="btn btn-primary btn-sm self-center"><i class="fa-solid fa-map-location-dot"></i> Localiser la boutique</a>
+                    <article class="flex flex-col">
+                        <div class="mb-5 overflow-hidden bg-sand">
+                            <img src="{{ $showroom->imageUrl() }}" alt="{{ $showroom->name }}" loading="lazy" class="aspect-[4/3] w-full object-cover">
+                        </div>
+                        <div class="mb-2 flex flex-wrap items-center gap-2">
+                            <h2 class="font-display text-2xl">{{ $showroom->name }}</h2>
+                            @if ($showroom->accepts_pressing)
+                                <span class="border border-line px-2 py-0.5 text-[.6rem] tracking-[.14em] text-muted uppercase">Dépôt pressing</span>
                             @endif
                         </div>
+                        @if ($showroom->address)<p class="text-sm text-body">{{ $showroom->address }}</p>@endif
+                        @if ($showroom->phone)
+                            <a href="tel:{{ preg_replace('/\s+/', '', $showroom->phone) }}" class="text-sm text-body hover:text-brand">{{ $showroom->phone }}</a>
+                        @endif
+                        <details class="group mt-4 border-y border-line">
+                            <summary class="flex cursor-pointer list-none items-center justify-between py-3 text-[.7rem] tracking-[.16em] text-ink uppercase">
+                                Horaires <i class="fa-solid fa-plus text-xs transition group-open:rotate-45"></i>
+                            </summary>
+                            <ul class="space-y-1 pb-4 text-sm">
+                                @foreach (\App\Models\Showroom::DAYS as $key => $day)
+                                    <li class="flex justify-between"><span class="text-ink">{{ $day }}</span><span class="text-muted">{{ $showroom->opening_hours[$key] ?? '—' }}</span></li>
+                                @endforeach
+                            </ul>
+                        </details>
+                        @if ($showroom->mapUrl())
+                            <a href="{{ $showroom->mapUrl() }}" target="_blank" rel="noopener" class="link-arrow mt-5 self-start">Localiser la maison <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
+                        @endif
                     </article>
                 @endforeach
             </div>
         @endif
 
-        <div class="mt-10 grid gap-5 rounded-lg bg-soft p-6 md:grid-cols-3">
-            <div class="flex items-center gap-4">
-                <span class="flex size-12 items-center justify-center rounded-full bg-white text-xl text-brand"><i class="fa-solid fa-phone"></i></span>
-                <div><p class="text-sm text-muted">Téléphone</p><a href="tel:{{ preg_replace('/\s+/', '', setting('phone')) }}" class="font-medium text-ink">{{ setting('phone') }}</a></div>
-            </div>
-            <div class="flex items-center gap-4">
-                <span class="flex size-12 items-center justify-center rounded-full bg-white text-xl text-[#25D366]"><i class="fa-brands fa-whatsapp"></i></span>
-                <div><p class="text-sm text-muted">WhatsApp</p><a href="{{ whatsapp_url() }}" target="_blank" rel="noopener" class="font-medium text-ink">Écrivez-nous</a></div>
-            </div>
-            <div class="flex items-center gap-4">
-                <span class="flex size-12 items-center justify-center rounded-full bg-white text-xl text-ocean"><i class="fa-regular fa-envelope"></i></span>
-                <div><p class="text-sm text-muted">Email</p><a href="mailto:{{ setting('email') }}" class="font-medium text-ink">{{ setting('email') }}</a></div>
-            </div>
+        <div class="mt-20 grid gap-px border border-line bg-line md:grid-cols-3">
+            @foreach ([
+                ['fa-phone', 'Téléphone', setting('phone'), 'tel:'.preg_replace('/\s+/', '', (string) setting('phone'))],
+                ['fa-whatsapp', 'WhatsApp', 'Écrivez-nous', whatsapp_url()],
+                ['fa-envelope', 'Email', setting('email'), 'mailto:'.setting('email')],
+            ] as [$icon, $label, $value, $href])
+                <a href="{{ $href }}" @if (str_starts_with($href, 'http')) target="_blank" rel="noopener" @endif class="flex items-center gap-4 bg-white p-6 transition hover:bg-ivory">
+                    <i class="{{ $icon === 'fa-whatsapp' ? 'fa-brands' : 'fa-solid' }} {{ $icon }} text-xl text-ink"></i>
+                    <span><span class="kicker block">{{ $label }}</span><span class="text-ink">{{ $value }}</span></span>
+                </a>
+            @endforeach
         </div>
     </div>
 @endsection

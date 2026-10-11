@@ -102,6 +102,22 @@ Il reprend la structure et l'ergonomie de 6point9.sn, aux couleurs du logo (roug
   - création d'un produit, sauvegarde d'une commande et des paramètres.
   - Aucune erreur JavaScript.
 
+## Refonte éditoriale (11 octobre 2026)
+
+Le site public a été redessiné pour se démarquer de 6point9. L'administration n'a pas changé, à part la gestion des nouveautés.
+
+- **Style :** fond ivoire, titres à empattements (Cormorant Garamond), texte en DM Sans, rouge du logo réservé aux boutons d'action.
+- **En-tête :** bandeau d'annonce défilant, logo centré, en-tête qui se réduit au défilement, grand menu Boutique avec image, recherche plein écran.
+- **Accueil :** bannière en écran partagé, bande de réassurance, « Nos univers » en grille asymétrique, « Les incontournables », « La chaîne complète » (sur mesure, boutique, pressing), « Nouvelle collection », « Notre atelier », accessoires, avis clients, galerie « Portés par vous », communauté WhatsApp.
+- **Cartes produit :** 2e photo au survol, ajout rapide avec choix de la taille, étiquette « −17 % », cœur favori.
+- **Fiche produit :** photos en grand format avec visionneuse plein écran, tailles en boutons, guide des tailles, avis clients.
+- **Nouveautés :**
+  - avis clients, publiés après validation dans l'administration ;
+  - favoris, gardés en session pour les visiteurs et dans le compte pour les clients connectés ;
+  - guide des tailles (page `/guide-des-tailles` et fenêtre sur la fiche produit) ;
+  - prise de rendez-vous sur mesure (`/sur-mesure`), avec photo d'inspiration et référence `SM…`.
+- **À remplacer :** les chiffres de la section atelier (15 ans, 5 000 pièces) et son texte sont des exemples. Remplace-les dans *Paramètres* par tes vrais chiffres. Les tableaux du guide des tailles sont des mesures standard indicatives : adapte-les à tes coupes si besoin.
+
 ## À savoir et à faire
 
 1. **Photos provisoires.** Je n'ai copié **ni les photos, ni les textes, ni le logo de 6point9**, qui sont protégés par le droit d'auteur. Les produits, catégories, bannières et showrooms ont des illustrations générées aux couleurs de Mombeya Galy. Remplace-les par tes vraies photos dans l'administration.

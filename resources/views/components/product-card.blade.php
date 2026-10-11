@@ -1,82 +1,80 @@
-@props(['product', 'hover' => true])
+@props(['product'])
 
 @php
     $sizes = $product->sizeList();
     $colors = $product->colorList();
     $url = route('product.show', $product);
+    $hoverImage = $product->hoverImageUrl();
+    // Quick-add works in one tap when the product has no colour to choose.
+    $quickAdd = $product->inStock() && ! $colors;
 @endphp
 
-<div {{ $attributes->class(['group/card relative flex h-full flex-col rounded-lg bg-white transition duration-150 hover:z-20 hover:shadow-card']) }}
-     x-data="addToCart({ productId: {{ $product->id }}, needsSize: {{ $sizes ? 'true' : 'false' }}, needsColor: {{ $colors ? 'true' : 'false' }}, url: '{{ route('cart.store') }}' })">
+<article {{ $attributes->class(['group/card relative flex h-full flex-col']) }}
+         x-data="addToCart({ productId: {{ $product->id }}, needsSize: {{ $sizes ? 'true' : 'false' }}, needsColor: false, instant: true, url: '{{ route('cart.store') }}', cartUrl: '{{ route('cart.index') }}' })"
+         @mouseleave="open = false">
+    <div class="relative overflow-hidden bg-sand">
+        <a href="{{ $url }}" class="block" aria-label="{{ $product->name }}">
+            <img src="{{ $product->mainImageUrl() }}" alt="{{ $product->name }}" loading="lazy"
+                 @class(['aspect-[3/4] w-full object-cover transition duration-700', 'group-hover/card:opacity-0' => $hoverImage, 'group-hover/card:scale-[1.04]' => ! $hoverImage])>
+            @if ($hoverImage)
+                <img src="{{ $hoverImage }}" alt="" loading="lazy" class="absolute inset-0 aspect-[3/4] w-full object-cover opacity-0 transition duration-700 group-hover/card:opacity-100">
+            @endif
+        </a>
 
-    @if ($product->hasDiscount())
-        <span class="promo-badge">Promo</span>
-    @elseif ($product->is_new)
-        <span class="absolute top-3 left-3 z-10 rounded bg-azure px-2 py-0.5 text-[.65rem] font-medium uppercase tracking-wide text-white">Nouveau</span>
-    @endif
+        {{-- Badges --}}
+        <div class="pointer-events-none absolute left-3 top-3 flex flex-col items-start gap-1.5">
+            @if ($product->hasDiscount())
+                <span class="bg-brand px-2 py-1 text-[.65rem] font-medium tracking-wider text-white">−{{ $product->discountPercent() }} %</span>
+            @endif
+            @if ($product->is_new)
+                <span class="bg-ivory px-2 py-1 text-[.65rem] font-medium tracking-[.14em] text-ink uppercase">Nouveau</span>
+            @endif
+            @unless ($product->inStock())
+                <span class="bg-ink/80 px-2 py-1 text-[.65rem] tracking-[.14em] text-ivory uppercase">Épuisé</span>
+            @endunless
+        </div>
 
-    <button type="button" title="Aperçu"
-            @click="$dispatch('quick-view', '{{ route('product.quick-view', $product) }}')"
-            class="absolute top-3 right-3 z-10 hidden size-9 items-center justify-center rounded-full bg-white text-ink opacity-0 shadow transition group-hover/card:opacity-100 hover:text-brand lg:flex">
-        <i class="fa-solid fa-magnifying-glass-plus"></i>
-    </button>
+        {{-- Favourite --}}
+        <button type="button" x-data="wishlistButton('{{ route('wishlist.toggle', $product) }}', {{ \App\Support\Wishlist::has($product->id) ? 'true' : 'false' }})"
+                @click="toggle()" :aria-pressed="active" aria-label="Ajouter aux favoris"
+                class="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-ivory/90 text-ink transition hover:bg-white">
+            <i class="fa-heart text-sm" :class="active ? 'fa-solid text-brand' : 'fa-regular'"></i>
+        </button>
 
-    <a href="{{ $url }}" class="block overflow-hidden rounded-t-lg bg-soft">
-        <img src="{{ $product->mainImageUrl() }}" alt="{{ $product->name }}" loading="lazy"
-             class="aspect-[3/4] w-full object-cover transition duration-500 group-hover/card:scale-[1.03]">
-    </a>
-
-    <div class="flex flex-1 flex-col px-3 pt-3 pb-3">
-        @if ($product->category)
-            <a href="{{ route('shop.category', $product->category) }}" class="mb-1 truncate text-xs text-muted hover:text-brand">{{ $product->category->name }}</a>
+        {{-- Quick add (desktop hover) --}}
+        @if ($quickAdd)
+            <div class="absolute inset-x-3 bottom-3 hidden translate-y-2 opacity-0 transition duration-300 group-hover/card:translate-y-0 group-hover/card:opacity-100 lg:block">
+                @if ($sizes)
+                    <div x-show="open" x-cloak class="mb-2 bg-white/95 p-3 backdrop-blur">
+                        <p class="mb-2 text-[.65rem] tracking-[.16em] text-muted uppercase">Choisissez votre taille</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            @foreach ($sizes as $size)
+                                <button type="button" @click="choose(@js($size))" class="min-w-9 border border-line px-2 py-1.5 text-xs text-ink transition hover:border-ink hover:bg-ink hover:text-ivory">{{ str_replace('Pointure ', '', $size) }}</button>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+                <button type="button" @click="{{ $sizes ? 'open = !open' : 'submit()' }}" :disabled="loading"
+                        class="flex w-full items-center justify-center gap-2 bg-ink py-3 text-[.7rem] font-medium tracking-[.16em] text-ivory uppercase transition hover:bg-brand">
+                    <i class="fa-solid" :class="loading ? 'fa-spinner fa-spin' : 'fa-plus'"></i> Ajout rapide
+                </button>
+                <p x-cloak x-show="error" x-text="error" class="mt-1 bg-white px-2 py-1 text-xs text-danger"></p>
+            </div>
         @endif
-        @unless ($product->inStock())
-            <div class="mb-1 rounded bg-danger/10 px-2 py-1 text-center text-xs font-medium text-danger">Fin de stock</div>
-        @endunless
-        <h3 class="mb-1 text-sm font-normal leading-snug">
+    </div>
+
+    <div class="flex flex-1 flex-col pt-4">
+        @if ($product->category)
+            <p class="mb-1 text-[.65rem] tracking-[.18em] text-muted uppercase">{{ $product->category->name }}</p>
+        @endif
+        <h3 class="font-sans text-[.95rem] font-normal leading-snug">
             <a href="{{ $url }}" class="text-ink transition hover:text-brand">{{ $product->name }}</a>
         </h3>
-        <div class="mt-auto flex flex-wrap items-baseline gap-x-2">
+        <div class="mt-1.5 flex flex-wrap items-baseline gap-x-2">
+            <span @class(['text-[.95rem] font-medium', 'text-brand' => $product->hasDiscount(), 'text-ink' => ! $product->hasDiscount()])>{{ money($product->finalPrice()) }}</span>
             @if ($product->hasDiscount())
                 <del class="text-sm text-muted">{{ money($product->price) }}</del>
             @endif
-            <span class="text-brand">{{ money($product->finalPrice()) }}</span>
         </div>
     </div>
-
-    {{-- Hover panel (desktop) --}}
-    @if ($hover)
-        <div class="invisible absolute inset-x-0 top-full -mt-2 hidden rounded-b-lg bg-white px-3 pb-3 pt-1 opacity-0 shadow-card transition duration-150 group-hover/card:visible group-hover/card:opacity-100 lg:block"
-             style="clip-path: inset(0 -2rem -2rem -2rem);">
-            @if ($product->inStock())
-                @if ($colors)
-                    <div class="mb-2 flex flex-wrap gap-1.5">
-                        @foreach ($colors as $color)
-                            <button type="button" @click="color = @js($color)" :class="color === @js($color) ? 'border-brand text-brand' : 'border-line text-body'"
-                                    class="rounded-full border px-2 py-0.5 text-[.7rem] transition">{{ $color }}</button>
-                        @endforeach
-                    </div>
-                @endif
-                <div class="flex gap-2">
-                    @if ($sizes)
-                        <select x-model="size" class="form-control flex-1 px-2 py-1.5 text-xs" aria-label="Taille">
-                            <option value="">Taille</option>
-                            @foreach ($sizes as $size)
-                                <option value="{{ $size }}">{{ $size }}</option>
-                            @endforeach
-                        </select>
-                    @endif
-                    <button type="button" @click="submit()" :disabled="loading" class="btn btn-primary btn-sm flex-1 whitespace-nowrap">
-                        <i class="fa-solid" :class="loading ? 'fa-spinner fa-spin' : 'fa-cart-plus'"></i> Ajouter
-                    </button>
-                </div>
-                <p x-cloak x-show="error" x-text="error" class="mt-1 text-xs text-danger"></p>
-            @else
-                <div class="rounded bg-danger/10 px-2 py-1.5 text-center text-xs text-danger">Ce produit est en rupture de stock</div>
-            @endif
-            <button type="button" @click="$dispatch('quick-view', '{{ route('product.quick-view', $product) }}')" class="mt-2 block w-full text-center text-xs text-muted hover:text-brand">
-                <i class="fa-regular fa-eye"></i> Aperçu
-            </button>
-        </div>
-    @endif
-</div>
+</article>

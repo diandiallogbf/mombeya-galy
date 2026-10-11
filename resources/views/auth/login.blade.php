@@ -6,7 +6,7 @@
     <div class="container-shop py-10 lg:py-16">
         <div class="grid gap-10 lg:grid-cols-2">
             {{-- Login --}}
-            <div class="rounded-lg bg-white p-6 shadow-lg md:p-8">
+            <div class="panel">
                 <h1 class="mb-1 text-2xl">Se connecter</h1>
                 <p class="mb-5 text-sm text-muted">Accédez à vos commandes et à votre compte client.</p>
                 <hr class="mb-6 border-line">
@@ -23,7 +23,7 @@
                         <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-ink" aria-label="Afficher le mot de passe"><i class="fa-regular" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i></button>
                     </div>
                     <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
-                        <label class="flex items-center gap-2"><input type="checkbox" name="remember" checked class="accent-[#e0144f]"> Se souvenir de moi</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" name="remember" checked class="accent-[#1c1917]"> Se souvenir de moi</label>
                         <a href="{{ route('password.request') }}" class="text-brand hover:underline">Mot de passe oublié ?</a>
                     </div>
                     <hr class="border-line">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <label class="mt-5 flex items-start gap-2 text-sm">
-                        <input type="checkbox" name="terms" value="1" x-model="terms" class="mt-1 accent-[#e0144f]">
+                        <input type="checkbox" name="terms" value="1" x-model="terms" class="mt-1 accent-[#1c1917]">
                         <span>J'accepte les termes et conditions de la politique de confidentialité.</span>
                     </label>
                     @error('terms', 'register')<p class="form-error">{{ $message }}</p>@enderror

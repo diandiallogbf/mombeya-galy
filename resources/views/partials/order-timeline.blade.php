@@ -17,9 +17,9 @@
             @php($done = $currentIndex !== false && $i <= $currentIndex)
             <li class="relative">
                 @if (! $loop->first)
-                    <span @class(['absolute right-1/2 top-5 h-1 w-full -translate-y-1/2', 'bg-brand' => $done, 'bg-line' => ! $done])></span>
+                    <span @class(['absolute right-1/2 top-5 h-1 w-full -translate-y-1/2', 'bg-ink' => $done, 'bg-line' => ! $done])></span>
                 @endif
-                <span @class(['relative mx-auto flex size-10 items-center justify-center rounded-full text-sm', 'bg-brand text-white' => $done, 'bg-soft text-muted' => ! $done])>
+                <span @class(['relative mx-auto flex size-10 items-center justify-center rounded-full text-sm', 'bg-ink text-ivory' => $done, 'bg-sand text-muted' => ! $done])>
                     <i class="fa-solid {{ $icons[$i] }}"></i>
                 </span>
                 <span @class(['mt-2 block text-[.7rem] sm:text-xs', 'font-medium text-ink' => $done, 'text-muted' => ! $done])>{{ $step->getLabel() }}</span>

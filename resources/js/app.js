@@ -9,20 +9,35 @@ window.Alpine = Alpine;
 Alpine.plugin(collapse);
 
 const csrf = () => document.querySelector('meta[name="csrf-token"]')?.content;
+const meta = (name) => document.querySelector(`meta[name="${name}"]`)?.content;
+
+const postJson = async (url, body = {}) => {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-TOKEN': csrf() },
+        body: JSON.stringify(body),
+    });
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, data };
+};
 
 /* ------------------------------------------------------------------ */
-/* Global stores: cart badge + toasts                                  */
+/* Global stores                                                       */
 /* ------------------------------------------------------------------ */
 Alpine.store('cart', {
-    count: Number(document.querySelector('meta[name="cart-count"]')?.content || 0),
-    total: document.querySelector('meta[name="cart-total"]')?.content || '',
+    count: Number(meta('cart-count') || 0),
+    total: meta('cart-total') || '',
+});
+
+Alpine.store('wishlist', {
+    count: Number(meta('wishlist-count') || 0),
 });
 
 Alpine.store('toast', {
     items: [],
-    show(message, type = 'success') {
+    show(message, link = null) {
         const id = Date.now() + Math.random();
-        this.items.push({ id, message, type });
+        this.items.push({ id, message, link });
         setTimeout(() => this.dismiss(id), 3500);
     },
     dismiss(id) {
@@ -31,52 +46,48 @@ Alpine.store('toast', {
 });
 
 /* ------------------------------------------------------------------ */
-/* Add to cart (used by product cards, quick view and product page)    */
+/* Add to cart (product card quick-add and product page)               */
 /* ------------------------------------------------------------------ */
 Alpine.data('addToCart', (config = {}) => ({
-    productId: config.productId,
     size: config.size ?? '',
     color: config.color ?? '',
     quantity: 1,
-    needsSize: !!config.needsSize,
-    needsColor: !!config.needsColor,
+    open: false,
     loading: false,
     error: '',
 
+    choose(size) {
+        this.size = size;
+        if (config.instant) this.submit();
+    },
+
     async submit() {
         this.error = '';
-        if (this.needsSize && !this.size) {
+        if (config.needsSize && !this.size) {
             this.error = 'Veuillez choisir une taille.';
+            this.open = true;
             return;
         }
-        if (this.needsColor && !this.color) {
+        if (config.needsColor && !this.color) {
             this.error = 'Veuillez choisir une couleur.';
             return;
         }
         this.loading = true;
         try {
-            const response = await fetch(config.url || '/panier', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN': csrf(),
-                },
-                body: JSON.stringify({
-                    product_id: this.productId,
-                    size: this.size || null,
-                    color: this.color || null,
-                    quantity: this.quantity,
-                }),
+            const { ok, data } = await postJson(config.url, {
+                product_id: config.productId,
+                size: this.size || null,
+                color: this.color || null,
+                quantity: this.quantity,
             });
-            const data = await response.json();
-            if (!response.ok) {
+            if (!ok) {
                 this.error = data.message || 'Une erreur est survenue.';
                 return;
             }
             Alpine.store('cart').count = data.count;
             Alpine.store('cart').total = data.total;
-            Alpine.store('toast').show(data.message || 'Produit ajouté au panier avec succès');
+            Alpine.store('toast').show(data.message || 'Produit ajouté au panier', { label: 'Voir le panier', url: config.cartUrl });
+            this.open = false;
             window.dispatchEvent(new CustomEvent('cart-updated'));
         } catch (e) {
             this.error = 'Connexion impossible, veuillez réessayer.';
@@ -87,65 +98,67 @@ Alpine.data('addToCart', (config = {}) => ({
 }));
 
 /* ------------------------------------------------------------------ */
-/* Quick view modal: loads the product partial over AJAX               */
+/* Favourites                                                          */
 /* ------------------------------------------------------------------ */
-Alpine.data('quickView', () => ({
-    open: false,
-    html: '',
-    loading: false,
-    async show(url) {
-        this.open = true;
-        this.loading = true;
-        this.html = '';
-        document.body.classList.add('overflow-hidden');
-        try {
-            const response = await fetch(url, { headers: { Accept: 'text/html' } });
-            this.html = await response.text();
-        } catch (e) {
-            this.html = '<p class="p-6 text-center">Impossible de charger le produit.</p>';
-        } finally {
-            this.loading = false;
-        }
-    },
-    close() {
-        this.open = false;
-        document.body.classList.remove('overflow-hidden');
+Alpine.data('wishlistButton', (url, active = false) => ({
+    active,
+    busy: false,
+    async toggle() {
+        if (this.busy) return;
+        this.busy = true;
+        const { ok, data } = await postJson(url);
+        this.busy = false;
+        if (!ok) return;
+        this.active = data.added;
+        Alpine.store('wishlist').count = data.count;
+        Alpine.store('toast').show(data.message);
     },
 }));
 
 /* ------------------------------------------------------------------ */
-/* Product gallery with hover zoom                                     */
+/* Product gallery + fullscreen viewer                                 */
 /* ------------------------------------------------------------------ */
 Alpine.data('gallery', (images = []) => ({
     images,
     active: 0,
-    zoom: false,
-    origin: '50% 50%',
-    move(event) {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width) * 100;
-        const y = ((event.clientY - rect.top) / rect.height) * 100;
-        this.origin = `${x}% ${y}%`;
+    viewer: false,
+    open(index) {
+        this.active = index;
+        this.viewer = true;
+        document.body.classList.add('overflow-hidden');
+    },
+    close() {
+        this.viewer = false;
+        document.body.classList.remove('overflow-hidden');
+    },
+    next() {
+        this.active = (this.active + 1) % this.images.length;
+    },
+    prev() {
+        this.active = (this.active - 1 + this.images.length) % this.images.length;
     },
 }));
 
 /* ------------------------------------------------------------------ */
-/* Carousels                                                           */
+/* Carousels & reveal-on-scroll                                        */
 /* ------------------------------------------------------------------ */
 function initCarousels(root = document) {
     root.querySelectorAll('[data-hero]').forEach((el) => {
         if (el.swiper) return;
+        const counter = el.querySelector('[data-counter]');
         new Swiper(el, {
             modules: [Autoplay, EffectFade, Navigation, Pagination],
             effect: 'fade',
             fadeEffect: { crossFade: true },
-            loop: true,
-            speed: 800,
-            autoplay: { delay: 5000, disableOnInteraction: false },
+            loop: el.querySelectorAll('.swiper-slide').length > 1,
+            speed: 900,
+            autoplay: { delay: 6000, disableOnInteraction: false },
             pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
-            navigation: {
-                nextEl: el.querySelector('[data-next]'),
-                prevEl: el.querySelector('[data-prev]'),
+            navigation: { nextEl: el.querySelector('[data-next]'), prevEl: el.querySelector('[data-prev]') },
+            on: {
+                slideChange(swiper) {
+                    if (counter) counter.textContent = String(swiper.realIndex + 1).padStart(2, '0');
+                },
             },
         });
     });
@@ -154,26 +167,56 @@ function initCarousels(root = document) {
         if (el.swiper) return;
         const wrapper = el.closest('[data-carousel-wrapper]') || el;
         new Swiper(el, {
-            modules: [Autoplay, Navigation, Pagination],
-            loop: el.querySelectorAll('.swiper-slide').length > 4,
+            modules: [Navigation, Pagination],
             speed: 600,
             spaceBetween: 16,
-            autoplay: { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true },
-            slidesPerView: 1,
+            slidesPerView: 1.6,
             breakpoints: {
-                360: { slidesPerView: 2 },
-                600: { slidesPerView: 3 },
-                991: { slidesPerView: 4 },
+                480: { slidesPerView: 2.2, spaceBetween: 18 },
+                768: { slidesPerView: 3.2, spaceBetween: 22 },
+                1100: { slidesPerView: 4, spaceBetween: 24 },
             },
+            navigation: { nextEl: wrapper.querySelector('[data-next]'), prevEl: wrapper.querySelector('[data-prev]') },
             pagination: { el: wrapper.querySelector('.swiper-pagination'), clickable: true },
-            navigation: {
-                nextEl: wrapper.querySelector('[data-next]'),
-                prevEl: wrapper.querySelector('[data-prev]'),
-            },
+        });
+    });
+
+    root.querySelectorAll('[data-testimonials]').forEach((el) => {
+        if (el.swiper) return;
+        new Swiper(el, {
+            modules: [Autoplay, Pagination],
+            spaceBetween: 24,
+            slidesPerView: 1,
+            autoplay: { delay: 6000, disableOnInteraction: false },
+            breakpoints: { 768: { slidesPerView: 2 }, 1100: { slidesPerView: 3 } },
+            pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
         });
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => initCarousels());
+function initReveal() {
+    const items = document.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-visible'));
+        return;
+    }
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        { rootMargin: '0px 0px -60px 0px' },
+    );
+    items.forEach((el) => observer.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCarousels();
+    initReveal();
+});
 
 Alpine.start();

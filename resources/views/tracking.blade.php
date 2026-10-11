@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header title="Suivi de commande" :breadcrumbs="['Suivi de commande' => null]" />
 
-    <div class="container-shop">
+    <div class="container-shop mt-12">
         <div class="page-card">
             <h2 class="mb-6 text-center text-xl font-medium uppercase tracking-wide text-ink md:text-2xl">Suivi et traçabilité de votre commande</h2>
             <form method="GET" action="{{ route('tracking') }}" class="mx-auto flex max-w-xl overflow-hidden rounded-[.3125rem] border border-[#dae1e7] focus-within:border-azure">

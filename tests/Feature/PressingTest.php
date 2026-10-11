@@ -55,7 +55,7 @@ class PressingTest extends TestCase
     {
         $this->get('/pressing')->assertOk()->assertSee('Vos tenues entre de bonnes mains')->assertSee('Ratoma')->assertDontSee('Matoto');
         $this->get('/pressing/reserver?service='.$this->boubou->id)->assertOk()->assertSee('Grand boubou bazin');
-        $this->get('/')->assertSee('Mombeya Galy Pressing');
+        $this->get('/')->assertSee('La chaîne complète');
         $this->get('/fondation')->assertNotFound();
     }
 

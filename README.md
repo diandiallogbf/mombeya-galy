@@ -1,6 +1,6 @@
 # Mombeya Galy – boutique en ligne
 
-Boutique de mode africaine (Conakry) construite avec **Laravel 13**, **Filament 5** (administration), **Tailwind CSS 4**, **Alpine.js** et **SQLite**.
+Boutique de mode africaine (Conakry) construite avec **Laravel 13**, **Filament 5** (administration), **Tailwind CSS 4**, **Alpine.js** et **SQLite**. Design éditorial : fond ivoire, titres Cormorant Garamond, texte DM Sans.
 
 ## Démarrer le site
 
@@ -43,6 +43,11 @@ php artisan test                   # lance les tests automatiques
 | Tarifs du pressing | Admin → Pressing → Services & tarifs |
 | Ouvrir la collecte dans une nouvelle commune | Admin → Pressing → Zones de collecte (activer la zone) |
 | Showrooms qui acceptent les dépôts pressing | Admin → Contenu du site → Showrooms (« Point de dépôt pressing ») |
+| Modérer les avis clients (publiés seulement après validation) | Admin → Catalogue → Avis clients |
+| Traiter les demandes de rendez-vous sur mesure | Admin → Ventes → Rendez-vous sur mesure |
+| Photos de la galerie « Portés par vous » | Admin → Contenu du site → Galerie |
+| Bandeau défilant, section atelier (texte, chiffres, photo), lien communauté WhatsApp | Admin → Paramètres → Paramètres de la boutique |
+| Types de tenues et créneaux du sur mesure | Admin → Paramètres → Paramètres de la boutique (section Sur mesure) |
 | Couleurs du site | `resources/css/app.css` (bloc `@theme`), puis `npm run build` |
 | Logo | `public/images/logo.png` (horizontal) et `public/images/favicon.png` |
 

@@ -8,6 +8,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\PressingStatus;
 use App\Models\Category;
 use App\Models\DeliveryZone;
+use App\Models\GalleryPhoto;
 use App\Models\Order;
 use App\Models\PressingOrder;
 use App\Models\PressingService;
@@ -53,6 +54,22 @@ class DatabaseSeeder extends Seeder
         $this->orders();
         $this->call(PressingSeeder::class);
         $this->pressingOrders();
+        $this->gallery();
+    }
+
+    /**
+     * Demo pictures for the "Portés par vous" section (local demo only).
+     */
+    private function gallery(): void
+    {
+        Product::whereNotNull('images')->inRandomOrder()->take(8)->get()->each(function (Product $product, int $i) {
+            GalleryPhoto::create([
+                'image' => $product->images[0],
+                'caption' => 'Exemple – remplacez par vos photos',
+                'position' => $i + 1,
+                'is_active' => true,
+            ]);
+        });
     }
 
     private function users(): void

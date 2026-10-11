@@ -15,7 +15,7 @@
     @endphp
 
     <div class="container-shop">
-        <form method="POST" action="{{ route('pressing.store') }}" class="relative -mt-20 grid gap-6 lg:grid-cols-12"
+        <form method="POST" action="{{ route('pressing.store') }}" class="mt-12 grid gap-6 lg:grid-cols-12"
               x-data="{
                   mode: @js(old('mode', $defaultMode)),
                   zone: @js((string) old('pressing_zone_id', $zones->count() === 1 ? $zones->first()->id : '')),
@@ -38,8 +38,8 @@
 
             <div class="space-y-6 lg:col-span-8">
                 {{-- 1. Articles --}}
-                <section class="rounded-lg bg-white p-5 shadow-lg md:p-7">
-                    <h2 class="mb-1 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-brand text-sm text-white">1</span> Vos articles</h2>
+                <section class="panel">
+                    <h2 class="mb-1 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-ink font-display text-base text-ivory">1</span> Vos articles</h2>
                     <p class="mb-5 text-sm text-muted">Indiquez le nombre de pièces. Le montant est confirmé à la collecte.</p>
                     @error('items')<p class="form-error mb-3">{{ $message }}</p>@enderror
 
@@ -49,7 +49,7 @@
                                 <h3 class="mb-2 text-sm font-medium uppercase tracking-wide text-muted">{{ \App\Models\PressingService::CATEGORIES[$key] }}</h3>
                                 <div class="divide-y divide-line rounded-lg border border-line">
                                     @foreach ($group as $service)
-                                        <div class="flex items-center gap-3 px-4 py-3" :class="qty[{{ $service->id }}] > 0 && 'bg-brand-light/40'">
+                                        <div class="flex items-center gap-3 px-4 py-3" :class="qty[{{ $service->id }}] > 0 && 'bg-sand'">
                                             <i class="{{ $service->icon ?: 'fa-solid fa-shirt' }} w-6 text-center text-ocean"></i>
                                             <div class="min-w-0 flex-1">
                                                 <p class="text-sm text-ink">{{ $service->name }}</p>
@@ -68,8 +68,8 @@
                         @endforeach
                     </div>
 
-                    <label class="mt-5 flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition" :class="express ? 'border-brand bg-brand-light/50' : 'border-line'">
-                        <input type="checkbox" name="express" value="1" x-model="express" class="mt-1 accent-[#e0144f]">
+                    <label class="mt-5 flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition" :class="express ? 'border-ink bg-sand' : 'border-line'">
+                        <input type="checkbox" name="express" value="1" x-model="express" class="mt-1 accent-[#1c1917]">
                         <span class="text-sm">
                             <span class="block font-medium text-ink"><i class="fa-solid fa-bolt text-[#fea569]"></i> Option express 24h</span>
                             <span class="text-muted">Supplément de {{ $expressPercent }} % sur les articles.</span>
@@ -78,19 +78,19 @@
                 </section>
 
                 {{-- 2. Collecte ou dépôt --}}
-                <section class="rounded-lg bg-white p-5 shadow-lg md:p-7">
-                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-brand text-sm text-white">2</span> Collecte ou dépôt</h2>
+                <section class="panel">
+                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-ink font-display text-base text-ivory">2</span> Collecte ou dépôt</h2>
                     <div class="mb-5 grid gap-3 sm:grid-cols-2">
                         <label @class(['flex items-start gap-3 rounded-lg border p-4 transition', 'cursor-pointer' => $zones->isNotEmpty(), 'cursor-not-allowed opacity-50' => $zones->isEmpty()])
-                               :class="mode === 'collecte' ? 'border-brand bg-brand-light/50' : 'border-line'">
-                            <input type="radio" name="mode" value="collecte" x-model="mode" class="mt-1 accent-[#e0144f]" @disabled($zones->isEmpty())>
+                               :class="mode === 'collecte' ? 'border-ink bg-sand' : 'border-line'">
+                            <input type="radio" name="mode" value="collecte" x-model="mode" class="mt-1 accent-[#1c1917]" @disabled($zones->isEmpty())>
                             <span class="text-sm">
                                 <span class="block font-medium text-ink"><i class="fa-solid fa-truck-pickup text-brand"></i> Collecte à domicile</span>
                                 <span class="text-muted">{{ $zones->isEmpty() ? 'Bientôt disponible' : 'On passe chez vous : '.$zones->pluck('name')->join(', ') }}</span>
                             </span>
                         </label>
-                        <label class="flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition" :class="mode === 'depot' ? 'border-brand bg-brand-light/50' : 'border-line'">
-                            <input type="radio" name="mode" value="depot" x-model="mode" class="mt-1 accent-[#e0144f]">
+                        <label class="flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition" :class="mode === 'depot' ? 'border-ink bg-sand' : 'border-line'">
+                            <input type="radio" name="mode" value="depot" x-model="mode" class="mt-1 accent-[#1c1917]">
                             <span class="text-sm">
                                 <span class="block font-medium text-ink"><i class="fa-solid fa-store text-brand"></i> Dépôt en showroom</span>
                                 <span class="text-muted">Gratuit, dans le showroom de votre choix</span>
@@ -144,8 +144,8 @@
                 </section>
 
                 {{-- 3. Coordonnées & paiement --}}
-                <section class="rounded-lg bg-white p-5 shadow-lg md:p-7">
-                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-brand text-sm text-white">3</span> Vos coordonnées et le paiement</h2>
+                <section class="panel">
+                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-ink font-display text-base text-ivory">3</span> Vos coordonnées et le paiement</h2>
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div>
                             <label class="form-label" for="customer_name">Nom complet *</label>
@@ -166,8 +166,8 @@
 
                     <div class="mt-5 space-y-3">
                         @foreach (\App\Http\Controllers\PressingController::PAYMENT_METHODS as $value => $label)
-                            <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-line p-3 text-sm has-[:checked]:border-brand has-[:checked]:bg-brand-light/50">
-                                <input type="radio" name="payment_method" value="{{ $value }}" @checked(old('payment_method', 'livraison') === $value) class="accent-[#e0144f]">
+                            <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-line p-3 text-sm has-[:checked]:border-ink has-[:checked]:bg-sand">
+                                <input type="radio" name="payment_method" value="{{ $value }}" @checked(old('payment_method', 'livraison') === $value) class="accent-[#1c1917]">
                                 <span class="font-medium text-ink">{{ $label }}</span>
                             </label>
                         @endforeach
@@ -183,7 +183,7 @@
 
             {{-- Summary --}}
             <aside class="lg:col-span-4">
-                <div class="rounded-lg bg-white p-6 shadow-lg lg:sticky lg:top-6">
+                <div class="panel lg:sticky lg:top-6">
                     <h3 class="mb-4 text-lg">Récapitulatif</h3>
                     <div class="max-h-64 space-y-2 overflow-y-auto border-b border-line pb-4 text-sm">
                         <template x-for="id in Object.keys(qty).filter(id => qty[id] > 0)" :key="id">

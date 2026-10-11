@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" width="900" height="1100">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#efe6d9"/><stop offset="1" stop-color="#e2d5c3"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1100" fill="url(#bg)"/>
+  <!-- table -->
+  <rect x="0" y="760" width="900" height="340" fill="#cdb89c"/>
+  <rect x="0" y="760" width="900" height="14" fill="#b9a183"/>
+  <!-- folded fabric -->
+  <rect x="90" y="610" width="360" height="70" rx="8" fill="#ffffff"/>
+  <rect x="110" y="540" width="330" height="70" rx="8" fill="#1d5f93"/>
+  <rect x="80" y="680" width="380" height="80" rx="8" fill="#d6124a"/>
+  <path d="M110 575 Q275 555 440 575 M90 645 Q270 625 450 645 M80 720 Q270 700 460 720" stroke="#fff" stroke-opacity=".35" stroke-width="5" fill="none"/>
+  <!-- thread spools -->
+  <g transform="translate(560 540)">
+    <rect x="0" y="0" width="90" height="16" rx="4" fill="#8a6a3b"/>
+    <rect x="10" y="16" width="70" height="170" fill="#d6124a"/>
+    <path d="M10 40 H80 M10 70 H80 M10 100 H80 M10 130 H80 M10 160 H80" stroke="#a80d39" stroke-width="4"/>
+    <rect x="0" y="186" width="90" height="16" rx="4" fill="#8a6a3b"/>
+  </g>
+  <g transform="translate(680 600)">
+    <rect x="0" y="0" width="80" height="14" rx="4" fill="#8a6a3b"/>
+    <rect x="9" y="14" width="62" height="130" fill="#1c1917"/>
+    <path d="M9 40 H71 M9 70 H71 M9 100 H71 M9 125 H71" stroke="#3a332d" stroke-width="4"/>
+    <rect x="0" y="144" width="80" height="14" rx="4" fill="#8a6a3b"/>
+  </g>
+  <!-- scissors -->
+  <g transform="translate(470 820) rotate(-18)">
+    <circle cx="0" cy="0" r="42" fill="none" stroke="#1c1917" stroke-width="16"/>
+    <circle cx="0" cy="120" r="42" fill="none" stroke="#1c1917" stroke-width="16"/>
+    <path d="M30 25 L330 85 L330 95 L40 95 Z" fill="#9aa3ab"/>
+    <path d="M30 95 L330 75 L330 85 L40 25 Z" fill="#c4ccd3"/>
+    <circle cx="60" cy="60" r="10" fill="#1c1917"/>
+  </g>
+  <!-- measuring tape -->
+  <path d="M60 940 C 250 880, 420 1010, 640 930 S 860 960, 900 900" fill="none" stroke="#e7c35a" stroke-width="34" stroke-linecap="round"/>
+  <path d="M60 940 C 250 880, 420 1010, 640 930 S 860 960, 900 900" fill="none" stroke="#1c1917" stroke-width="34" stroke-dasharray="2 22" stroke-opacity=".55"/>
+  <!-- hanging garment -->
+  <path d="M450 80 Q450 40 480 40 Q510 40 510 70" fill="none" stroke="#8a6a3b" stroke-width="8" stroke-linecap="round"/>
+  <path d="M330 140 L480 95 L630 140" fill="none" stroke="#8a6a3b" stroke-width="10" stroke-linecap="round"/>
+  <path d="M400 130 Q480 175 560 130 L700 200 L740 360 L650 380 L640 470 L320 470 L310 380 L220 360 L260 200 Z" fill="#faf6f0"/>
+  <path d="M440 135 Q480 200 520 135" fill="none" stroke="#b08d57" stroke-width="6"/>
+  <path d="M480 170 L480 330" stroke="#b08d57" stroke-width="5" stroke-dasharray="12 8"/>
+  <text x="450" y="1060" text-anchor="middle" font-family="Georgia, serif" font-size="30" letter-spacing="10" fill="#1c1917" opacity=".55">L'ATELIER</text>
+</svg>

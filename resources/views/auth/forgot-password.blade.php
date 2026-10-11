@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container-shop py-12">
-        <div class="mx-auto max-w-lg rounded-lg bg-white p-6 shadow-lg md:p-8">
+        <div class="mx-auto max-w-lg panel">
             <h1 class="mb-2 text-2xl">Réinitialisation du mot de passe</h1>
             <p class="mb-6 text-sm text-muted">Saisissez votre adresse email : nous vous enverrons un lien pour choisir un nouveau mot de passe.</p>
             <form method="POST" action="{{ route('password.email') }}" class="space-y-4">

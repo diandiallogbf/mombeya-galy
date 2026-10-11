@@ -5,6 +5,8 @@ namespace App\Filament\Pages;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -80,6 +82,36 @@ class Settings extends Page
                         TextInput::make('tiktok_url')->label('TikTok')->url(),
                         TextInput::make('youtube_url')->label('YouTube')->url(),
                         TextInput::make('twitter_url')->label('X (Twitter)')->url(),
+                    ]),
+                Section::make('Page d\'accueil')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('announcement_messages')
+                            ->label('Messages du bandeau défilant')
+                            ->helperText('Séparés par le caractère | (barre verticale). Laisser vide pour masquer le bandeau.')
+                            ->columnSpanFull(),
+                        TextInput::make('atelier_title')->label('Titre de la section « Notre atelier »')->columnSpanFull(),
+                        Textarea::make('atelier_text')->label('Texte de la section atelier')->rows(3)->columnSpanFull(),
+                        TextInput::make('atelier_years')->label('Chiffre : années de savoir-faire')->helperText('À remplacer par votre vrai chiffre.'),
+                        TextInput::make('atelier_pieces')->label('Chiffre : pièces confectionnées')->helperText('À remplacer par votre vrai chiffre.'),
+                        FileUpload::make('atelier_image')
+                            ->label('Photo de l\'atelier')
+                            ->helperText('Format portrait conseillé. Utilisée aussi en tête de la page Sur mesure.')
+                            ->image()
+                            ->disk('public')
+                            ->directory('site')
+                            ->maxSize(5120)
+                            ->columnSpanFull(),
+                        TextInput::make('whatsapp_community_url')
+                            ->label('Lien de la communauté WhatsApp (chaîne ou groupe)')
+                            ->url()
+                            ->helperText('Laisser vide pour ouvrir une conversation WhatsApp avec la boutique.')
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Sur mesure')
+                    ->schema([
+                        TextInput::make('sur_mesure_types')->label('Types de tenues proposés')->helperText('Séparés par des virgules.')->required(),
+                        TextInput::make('sur_mesure_slots')->label('Créneaux de rendez-vous')->helperText('Séparés par des virgules, ex : 09:00 – 11:00, 14:00 – 16:00')->required(),
                     ]),
                 Section::make('Pressing')
                     ->description('Les services, tarifs et zones de collecte se gèrent dans le menu Pressing.')

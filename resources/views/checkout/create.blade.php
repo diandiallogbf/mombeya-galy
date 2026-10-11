@@ -11,7 +11,7 @@
     @endphp
 
     <div class="container-shop">
-        <form method="POST" action="{{ route('checkout.store') }}" class="relative -mt-20 grid gap-6 lg:grid-cols-12"
+        <form method="POST" action="{{ route('checkout.store') }}" class="mt-12 grid gap-6 lg:grid-cols-12"
               x-data="{ zone: @js((string) old('delivery_zone_id', '')), method: @js(old('payment_method', 'orange_money')), fees: @js($zoneFees), labels: @js($zoneLabels), subtotal: {{ $subtotal }} }">
             @csrf
 
@@ -21,8 +21,8 @@
                 @endif
 
                 {{-- Customer --}}
-                <section class="rounded-lg bg-white p-5 shadow-lg md:p-7">
-                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-brand text-sm text-white">1</span> Vos coordonnées</h2>
+                <section class="panel">
+                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-ink font-display text-base text-ivory">1</span> Vos coordonnées</h2>
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div>
                             <label class="form-label" for="customer_name">Nom complet *</label>
@@ -43,13 +43,13 @@
                 </section>
 
                 {{-- Delivery --}}
-                <section class="rounded-lg bg-white p-5 shadow-lg md:p-7">
-                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-brand text-sm text-white">2</span> Livraison</h2>
+                <section class="panel">
+                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-ink font-display text-base text-ivory">2</span> Livraison</h2>
                     <div class="mb-4 grid gap-3 sm:grid-cols-2">
                         @foreach ($zones as $zone)
                             <label class="flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition"
-                                   :class="zone === '{{ $zone->id }}' ? 'border-brand bg-brand-light/50' : 'border-line hover:border-muted'">
-                                <input type="radio" name="delivery_zone_id" value="{{ $zone->id }}" x-model="zone" class="mt-1 accent-[#e0144f]" required>
+                                   :class="zone === '{{ $zone->id }}' ? 'border-ink bg-sand' : 'border-line hover:border-muted'">
+                                <input type="radio" name="delivery_zone_id" value="{{ $zone->id }}" x-model="zone" class="mt-1 accent-[#1c1917]" required>
                                 <span class="flex-1 text-sm">
                                     <span class="block font-medium text-ink">{{ $zone->name }}</span>
                                     <span class="text-muted">{{ $zone->delay }}</span>
@@ -71,13 +71,13 @@
                 </section>
 
                 {{-- Payment --}}
-                <section class="rounded-lg bg-white p-5 shadow-lg md:p-7">
-                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-brand text-sm text-white">3</span> Mode de paiement</h2>
+                <section class="panel">
+                    <h2 class="mb-5 flex items-center gap-3 text-lg"><span class="flex size-8 items-center justify-center rounded-full bg-ink font-display text-base text-ivory">3</span> Mode de paiement</h2>
                     <div class="space-y-3">
                         @foreach ($methods as $method)
                             <label class="flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition"
-                                   :class="method === '{{ $method->value }}' ? 'border-brand bg-brand-light/50' : 'border-line hover:border-muted'">
-                                <input type="radio" name="payment_method" value="{{ $method->value }}" x-model="method" class="mt-1 accent-[#e0144f]">
+                                   :class="method === '{{ $method->value }}' ? 'border-ink bg-sand' : 'border-line hover:border-muted'">
+                                <input type="radio" name="payment_method" value="{{ $method->value }}" x-model="method" class="mt-1 accent-[#1c1917]">
                                 <span class="text-sm">
                                     <span class="block font-medium text-ink">{{ $method->getLabel() }}</span>
                                     <span class="text-muted">{{ $method->description() }}</span>
@@ -91,7 +91,7 @@
 
             {{-- Summary --}}
             <aside class="lg:col-span-4">
-                <div class="rounded-lg bg-white p-6 shadow-lg lg:sticky lg:top-6">
+                <div class="panel lg:sticky lg:top-6">
                     <h3 class="mb-4 text-lg">Récapitulatif</h3>
                     <div class="max-h-72 space-y-3 overflow-y-auto border-b border-line pb-4">
                         @foreach ($lines as $line)

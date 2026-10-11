@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -9,10 +10,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PressingController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShowroomController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -24,7 +27,10 @@ Route::get('/promotions', [ShopController::class, 'promotions'])->name('shop.pro
 Route::get('/prestige', [ShopController::class, 'prestige'])->name('shop.prestige');
 Route::get('/categorie/{category}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/produit/{product}', [ProductController::class, 'show'])->name('product.show');
-Route::get('/produit/{product}/apercu', [ProductController::class, 'quickView'])->name('product.quick-view');
+Route::post('/produit/{product}/avis', [ReviewController::class, 'store'])->name('reviews.store')->middleware('throttle:5,1');
+Route::get('/favoris', [WishlistController::class, 'index'])->name('wishlist.index');
+Route::post('/favoris/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+Route::view('/guide-des-tailles', 'size-guide')->name('size-guide');
 
 // Cart & checkout
 Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
@@ -41,6 +47,11 @@ Route::get('/showrooms', [ShowroomController::class, 'index'])->name('showrooms'
 Route::redirect('/contact', '/showrooms');
 Route::get('/videos', [VideoController::class, 'index'])->name('videos');
 Route::get('/devise/{code}', CurrencyController::class)->name('currency');
+
+// Sur mesure
+Route::get('/sur-mesure', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/sur-mesure', [AppointmentController::class, 'store'])->name('appointments.store')->middleware('throttle:5,1');
+Route::get('/sur-mesure/{appointment}/confirmation', [AppointmentController::class, 'confirmation'])->name('appointments.confirmation');
 
 // Pressing
 Route::get('/pressing', [PressingController::class, 'index'])->name('pressing.index');

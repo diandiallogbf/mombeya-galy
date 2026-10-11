@@ -9,8 +9,14 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
             fonts: [
-                bunny('Rubik', {
-                    weights: [300, 400, 500, 700],
+                bunny('Cormorant Garamond', {
+                    weights: [500, 600, 700],
+                    styles: ['normal', 'italic'],
+                    preload: [{ weight: 600, style: 'normal' }],
+                }),
+                bunny('DM Sans', {
+                    weights: [400, 500, 700],
+                    preload: [{ weight: 400, style: 'normal' }],
                 }),
             ],
         }),

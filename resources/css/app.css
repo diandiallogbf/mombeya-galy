@@ -5,29 +5,37 @@
 @source '../../storage/framework/views/*.php';
 @source '../views';
 
+/*
+ * Mombeya Galy – direction "éditoriale" : fond ivoire, titres à empattements,
+ * noir chaud pour le texte, rouge du logo réservé aux actions.
+ */
 @theme {
-    --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-display: 'Cormorant Garamond', ui-serif, Georgia, 'Times New Roman', serif;
 
-    /* Mombeya Galy brand (from the logo) */
-    --color-brand: #e0144f;
-    --color-brand-dark: #b80e3f;
-    --color-brand-light: #fde8ee;
+    /* Brand (logo) */
+    --color-brand: #d6124a;
+    --color-brand-dark: #a80d39;
+    --color-brand-light: #fbe9ee;
     --color-azure: #3fa9f5;
-    --color-ocean: #0b6cb5;
-    --color-navy: #0b2a4a;
-    --color-night: #071c33;
+    --color-ocean: #1d5f93;
 
-    /* Neutral tones (Cartzilla-like) */
-    --color-ink: #373f50;
-    --color-body: #4b566b;
-    --color-muted: #7d879c;
-    --color-soft: #f3f5f9;
-    --color-line: #e3e9ef;
-    --color-success: #42d697;
-    --color-danger: #f34770;
+    /* Editorial neutrals */
+    --color-ivory: #faf6f0;
+    --color-sand: #f1eae0;
+    --color-ink: #1c1917;
+    --color-body: #4a443d;
+    --color-muted: #8a8178;
+    --color-line: #e6ded2;
+    --color-night: #171412;
+    --color-navy: #171412;
+    --color-soft: #f1eae0;
+    --color-success: #2f9e6e;
+    --color-danger: #d23b4f;
+    --color-gold: #b08d57;
 
-    --shadow-card: 0 0.3rem 1.525rem -0.375rem rgba(0, 0, 0, 0.1);
-    --shadow-lift: 0 0.5rem 1.125rem -0.5rem rgba(224, 20, 79, 0.9);
+    --shadow-card: 0 18px 40px -24px rgba(28, 25, 23, 0.35);
+    --shadow-lift: none;
 }
 
 @layer base {
@@ -36,11 +44,19 @@
     }
 
     body {
-        @apply bg-white font-sans text-body antialiased;
+        @apply bg-ivory font-sans text-[15px] text-body antialiased;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3 {
+        @apply font-display font-semibold tracking-tight text-ink;
+    }
+
+    h4, h5, h6 {
         @apply font-medium text-ink;
+    }
+
+    ::selection {
+        @apply bg-ink text-ivory;
     }
 
     [x-cloak] {
@@ -50,85 +66,145 @@
 
 @layer components {
     .container-shop {
-        @apply mx-auto w-full max-w-[1260px] px-4;
+        @apply mx-auto w-full max-w-[1320px] px-4 md:px-6;
+    }
+
+    /* Small uppercase label above titles */
+    .kicker {
+        @apply text-[.7rem] font-medium tracking-[.28em] text-muted uppercase;
+    }
+
+    .display-title {
+        @apply font-display text-4xl leading-[1.05] font-semibold text-ink md:text-5xl lg:text-6xl;
+    }
+
+    .section-title {
+        @apply font-display text-3xl leading-tight font-semibold text-ink md:text-[2.6rem];
+    }
+
+    .link-arrow {
+        @apply inline-flex items-center gap-2 border-b border-ink pb-0.5 text-[.75rem] font-medium tracking-[.18em] text-ink uppercase transition hover:border-brand hover:text-brand;
     }
 
     .btn {
-        @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-[7px] px-5 py-3 text-[1.0625rem] font-normal transition duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+        @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-[2px] px-7 py-3.5 text-[.78rem] font-medium tracking-[.14em] uppercase transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
     }
 
     .btn-sm {
-        @apply rounded px-4 py-[.425rem] text-[.8125rem];
+        @apply px-4 py-2.5 text-[.7rem];
     }
 
     .btn-primary {
         @apply bg-brand text-white hover:bg-brand-dark;
     }
 
+    .btn-dark {
+        @apply bg-ink text-ivory hover:bg-brand;
+    }
+
     .btn-shadow {
-        box-shadow: var(--shadow-lift);
+        box-shadow: none;
     }
 
     .btn-secondary {
-        @apply bg-ocean text-white hover:bg-navy;
+        @apply bg-ink text-ivory hover:bg-black;
     }
 
     .btn-outline {
-        @apply border border-brand text-brand hover:bg-brand hover:text-white;
+        @apply border border-ink text-ink hover:bg-ink hover:text-ivory;
     }
 
     .btn-outline-dark {
-        @apply border border-line text-ink hover:border-brand hover:text-brand;
+        @apply border border-line bg-white text-ink hover:border-ink;
+    }
+
+    .btn-light {
+        @apply bg-ivory text-ink hover:bg-white;
     }
 
     .form-label {
-        @apply mb-1.5 block text-sm font-medium text-ink;
+        @apply mb-1.5 block text-[.72rem] font-medium tracking-[.14em] text-ink uppercase;
     }
 
     .form-control {
-        @apply block w-full rounded-[.3125rem] border border-[#dae1e7] bg-white px-4 py-2.5 text-[.9375rem] text-body outline-none transition placeholder:text-muted focus:border-azure focus:ring-3 focus:ring-azure/20;
+        @apply block w-full rounded-[2px] border border-line bg-white px-4 py-3 text-[.95rem] text-ink outline-none transition placeholder:text-muted/80 focus:border-ink;
     }
 
     .form-error {
-        @apply mt-1 text-sm text-danger;
+        @apply mt-1.5 text-sm text-danger;
     }
 
-    .page-title {
-        @apply bg-navy pt-8 pb-24 text-white lg:pt-10;
-    }
-
+    /* Content card used on inner pages */
     .page-card {
-        @apply relative -mt-20 rounded-lg bg-white p-4 shadow-lg md:p-6;
+        @apply rounded-[4px] border border-line bg-white p-5 md:p-8;
     }
 
-    .section-title {
-        @apply text-center text-2xl font-medium text-ink;
+    .panel {
+        @apply rounded-[4px] border border-line bg-white p-5 md:p-7;
+    }
+
+    .chip {
+        @apply inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm text-ink transition hover:border-ink;
+    }
+
+    .chip-active {
+        @apply border-ink bg-ink text-ivory hover:border-ink;
+    }
+
+    .size-pill {
+        @apply flex min-w-12 cursor-pointer items-center justify-center rounded-[2px] border border-line bg-white px-3 py-2.5 text-sm text-ink transition hover:border-ink;
     }
 
     .promo-badge {
-        @apply absolute top-3 left-3 z-10 flex size-11 items-center justify-center rounded-full bg-brand text-[.55rem] font-bold tracking-wider text-white uppercase;
+        @apply absolute top-3 left-3 z-10 rounded-full bg-brand px-2.5 py-1 text-[.68rem] font-medium tracking-wide text-white;
     }
 
     .prose-shop ul {
-        @apply my-2 list-disc pl-5;
+        @apply my-3 list-disc space-y-1 pl-5;
     }
 
     .prose-shop p {
-        @apply my-2;
+        @apply my-3 leading-relaxed;
     }
 }
 
-/* Swiper pagination in brand colours */
+/* Swiper pagination */
 .swiper-pagination-bullet {
-    width: 6px;
-    height: 6px;
-    border-radius: 9999px;
-    background: #cfd6df;
+    width: 24px;
+    height: 2px;
+    border-radius: 0;
+    background: #cfc5b8;
     opacity: 1;
-    transition: width 0.3s;
+    transition: background 0.3s;
 }
 
 .swiper-pagination-bullet-active {
-    width: 22px;
-    background: var(--color-brand);
+    background: var(--color-ink);
+}
+
+/* Announcement ticker */
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    animation: marquee 40s linear infinite;
+}
+
+/* Fade-in on scroll */
+html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-marquee { animation: none; }
+    html.js [data-reveal] { opacity: 1; transform: none; }
 }

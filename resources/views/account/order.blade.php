@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header :title="'Commande '.$order->reference" :breadcrumbs="['Mon compte' => route('account.index'), $order->reference => null]" />
 
-    <div class="container-shop">
+    <div class="container-shop mt-12">
         <div class="page-card mx-auto max-w-3xl">
             <div class="mb-6 flex flex-wrap items-center justify-between gap-3 text-sm">
                 <span class="text-muted">Passée le {{ $order->created_at->translatedFormat('d F Y à H\hi') }}</span>

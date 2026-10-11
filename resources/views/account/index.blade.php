@@ -6,9 +6,9 @@
     <x-page-header title="Mon compte" :breadcrumbs="['Mon compte' => null]" />
 
     <div class="container-shop">
-        <div class="relative -mt-20 grid gap-6 lg:grid-cols-12">
+        <div class="mt-12 grid gap-6 lg:grid-cols-12">
             <aside class="lg:col-span-4">
-                <div class="rounded-lg bg-white p-6 shadow-lg">
+                <div class="panel">
                     <div class="mb-5 flex items-center gap-4">
                         <span class="flex size-14 items-center justify-center rounded-full bg-brand-light text-xl font-medium text-brand">{{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}</span>
                         <div>
@@ -40,7 +40,7 @@
             </aside>
 
             <section class="lg:col-span-8">
-                <div class="rounded-lg bg-white p-6 shadow-lg">
+                <div class="panel">
                     <h2 class="mb-5 text-lg">Mes commandes</h2>
                     @if ($orders->isEmpty())
                         <div class="py-10 text-center">
@@ -71,7 +71,7 @@
                     @endif
                 </div>
 
-                <div class="mt-6 rounded-lg bg-white p-6 shadow-lg">
+                <div class="mt-6 panel">
                     <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
                         <h2 class="text-lg"><i class="fa-solid fa-soap mr-1 text-brand"></i> Mes réservations pressing</h2>
                         <a href="{{ route('pressing.create') }}" class="btn btn-sm btn-outline">Nouvelle réservation</a>

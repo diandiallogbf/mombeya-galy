@@ -41,7 +41,7 @@ class ShopTest extends TestCase
     public function test_public_pages_render(): void
     {
         foreach (['/', '/boutique', '/boutique?tri=croissant&q=boubou', '/nouveautes', '/promotions', '/prestige', '/categorie/homme',
-            '/produit/'.$this->product->slug, '/produit/'.$this->product->slug.'/apercu', '/panier', '/suivi-commande',
+            '/produit/'.$this->product->slug, '/panier', '/suivi-commande',
             '/showrooms', '/videos', '/pressing', '/pressing/reserver', '/connexion', '/mot-de-passe/oublie'] as $url) {
             $this->get($url)->assertOk();
         }

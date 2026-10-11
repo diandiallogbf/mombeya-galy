@@ -17,16 +17,23 @@ class PlaceholderArt
     public const NAVY = '#0B2A4A';
 
     /** Soft backgrounds paired with a strong garment colour. */
-    private const PALETTES = [
-        ['#FDEBF0', '#F7D3DE', '#E0144F'],
-        ['#E8F4FD', '#D2E9FA', '#0B6CB5'],
-        ['#F4F1EA', '#E8E1D2', '#8A6A3B'],
-        ['#EEF2F6', '#DCE3EC', '#0B2A4A'],
-        ['#FFF4E5', '#FCE3C3', '#C46A0B'],
-        ['#EAF7F1', '#D2EEE1', '#1E7D55'],
-        ['#F3EEFB', '#E3D8F5', '#5B3A9B'],
-        ['#FBEFEF', '#F3D9D9', '#7A1F2B'],
+    /** Editorial palettes: [background top, background bottom, garment colour]. */
+    public const PALETTES = [
+        ['#F3ECE2', '#E9DFD1', '#1C1917'],
+        ['#EFE9E1', '#E3DACC', '#A80D39'],
+        ['#F1EBE3', '#E6DCCD', '#8A6A3B'],
+        ['#ECE7E0', '#DED6CB', '#23324A'],
+        ['#F4EEE6', '#E8DDCF', '#6B4E2E'],
+        ['#EEEAE2', '#E0D9CC', '#4A5A3C'],
+        ['#F2ECE6', '#E6DCD3', '#3A2F2A'],
+        ['#F3EDE5', '#E7DCCE', '#7A1F2B'],
     ];
+
+    /** Strong tones behind the white silhouettes of category tiles. */
+    public const CATEGORY_COLORS = ['#2B2622', '#8A6A3B', '#A80D39', '#3A332D', '#6B4E2E', '#4A5A3C', '#23324A', '#7A1F2B', '#5C5148', '#9C7B5B'];
+
+    /** Storefront colours of showroom covers. */
+    public const STORE_COLORS = ['#2B2622', '#8A6A3B', '#A80D39', '#4A5A3C', '#6B4E2E', '#23324A', '#9C7B5B', '#7A1F2B'];
 
     public static function disk()
     {
@@ -39,7 +46,7 @@ class PlaceholderArt
     public static function product(string $shape, int $variant, string $path): string
     {
         [$bg1, $bg2, $main] = self::PALETTES[$variant % count(self::PALETTES)];
-        $accent = $variant % 2 ? self::BLUE : '#F5C542';
+        $accent = $variant % 2 ? '#B08D57' : '#D6124A';
         $art = self::shape($shape, $main, $accent);
 
         $svg = <<<SVG
@@ -69,7 +76,7 @@ SVG;
      */
     public static function category(string $shape, int $variant, string $path): string
     {
-        $colors = [self::CRIMSON, '#0B6CB5', '#8A6A3B', self::NAVY, '#C46A0B', '#1E7D55', '#5B3A9B', '#7A1F2B', '#2C7DA0', '#B5179E'];
+        $colors = self::CATEGORY_COLORS;
         $c1 = $colors[$variant % count($colors)];
         $art = self::shape($shape, '#FFFFFF', 'rgba(255,255,255,.55)');
 
@@ -94,39 +101,30 @@ SVG;
     }
 
     /**
-     * Home hero background (1900x900): brand gradient, pattern and silhouettes on the right.
+     * Home hero picture (1200x1000, split-screen layout): editorial tones, arch, centred silhouettes.
      */
     public static function hero(int $variant, array $shapes, string $path): string
     {
-        $gradients = [
-            [self::CRIMSON, '#8E0B33'],
-            ['#0B6CB5', self::NAVY],
-            ['#1A1A2E', '#0B2A4A'],
-            ['#8A6A3B', '#4A3415'],
+        // Editorial tones: [background, arch, garment colour, accent]
+        $palettes = [
+            ['#E9DCC9', '#DCCAB2', '#1C1917', '#D6124A'],
+            ['#D9C7AE', '#CBB696', '#FAF6F0', '#1C1917'],
+            ['#2B2622', '#3A332D', '#FAF6F0', '#B08D57'],
+            ['#EFE7DB', '#E2D5C3', '#A80D39', '#1C1917'],
         ];
-        [$c1, $c2] = $gradients[$variant % count($gradients)];
+        [$bg, $arch, $main, $accent] = $palettes[$variant % count($palettes)];
         $items = '';
         foreach (array_values($shapes) as $i => $shape) {
-            $x = 940 + $i * 390;
-            $y = 10 + ($i % 2) * 50;
-            $items .= '<g transform="translate('.$x.' '.$y.') scale(.92)" opacity="'.(0.95 - $i * 0.15).'">'.self::shape($shape, '#FFFFFF', 'rgba(255,255,255,.5)').'</g>';
+            $x = count($shapes) > 1 ? 120 + $i * 420 : 300;
+            $y = 120 + ($i % 2) * 40;
+            $items .= '<g transform="translate('.$x.' '.$y.') scale(.95)">'.self::shape($shape, $main, $accent).'</g>';
         }
 
         $svg = <<<SVG
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 900" width="1900" height="900" preserveAspectRatio="xMidYMid slice">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{$c1}"/><stop offset="1" stop-color="{$c2}"/>
-    </linearGradient>
-    <pattern id="p" width="80" height="80" patternUnits="userSpaceOnUse">
-      <path d="M0 80 L40 20 L80 80 Z" fill="#fff" opacity=".05"/>
-      <circle cx="40" cy="10" r="3" fill="#fff" opacity=".12"/>
-    </pattern>
-  </defs>
-  <rect width="1900" height="900" fill="url(#g)"/>
-  <rect width="1900" height="900" fill="url(#p)"/>
-  <circle cx="1450" cy="450" r="420" fill="#fff" opacity=".06"/>
-  <circle cx="1450" cy="450" r="320" fill="#fff" opacity=".05"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" width="1200" height="1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="1200" height="1000" fill="{$bg}"/>
+  <path d="M250 1000 L250 420 A350 350 0 0 1 950 420 L950 1000 Z" fill="{$arch}"/>
+  <rect y="900" width="1200" height="100" fill="#000" opacity=".05"/>
   {$items}
 </svg>
 SVG;
@@ -140,7 +138,7 @@ SVG;
      */
     public static function cover(string $kind, int $variant, string $path): string
     {
-        $colors = [self::CRIMSON, '#0B6CB5', self::NAVY, '#1E7D55', '#8A6A3B', '#5B3A9B', '#C46A0B', '#7A1F2B'];
+        $colors = self::STORE_COLORS;
         $c = $colors[$variant % count($colors)];
         $art = match ($kind) {
             'store' => self::storeArt($c),
@@ -179,7 +177,7 @@ SVG;
   {$stripes}
   <rect x="160" y="450" width="220" height="260" rx="6" fill="#DCEBF8" stroke="#9FB4C8" stroke-width="4"/>
   <path d="M200 700 L200 560 Q230 520 260 560 L260 700 Z" fill="{$c}" opacity=".7"/>
-  <path d="M290 700 L290 540 Q320 500 350 540 L350 700 Z" fill="#0B6CB5" opacity=".6"/>
+  <path d="M290 700 L290 540 Q320 500 350 540 L350 700 Z" fill="#B08D57" opacity=".7"/>
   <rect x="440" y="450" width="200" height="420" rx="6" fill="#B9CCDD" stroke="#9FB4C8" stroke-width="4"/>
   <circle cx="610" cy="670" r="10" fill="#6B7C8F"/>
   <rect x="140" y="860" width="520" height="20" fill="#AFBCCB"/>

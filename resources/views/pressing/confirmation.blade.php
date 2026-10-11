@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header title="Merci pour votre réservation !" :breadcrumbs="['Pressing' => route('pressing.index'), 'Réservation '.$order->reference => null]" />
 
-    <div class="container-shop">
+    <div class="container-shop mt-12">
         <div class="page-card mx-auto max-w-3xl">
             <div class="mb-8 text-center">
                 <div class="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-success/15 text-3xl text-success"><i class="fa-solid fa-check"></i></div>

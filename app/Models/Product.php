@@ -81,6 +81,35 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Which size chart applies to this product (used by the size guide).
+     */
+    public function sizeGuideType(): ?string
+    {
+        $sizes = implode(' ', $this->sizeList());
+
+        return match (true) {
+            $sizes === '' => null,
+            str_contains($sizes, 'Pointure') => 'chaussures',
+            str_contains($sizes, 'ans') || $this->category?->slug === 'enfant' => 'enfant',
+            $this->category?->slug === 'femme' => 'femme',
+            default => 'homme',
+        };
+    }
+
+    /**
+     * Second picture shown when hovering a product card, if any.
+     */
+    public function hoverImageUrl(): ?string
+    {
+        return $this->imageUrls()[1] ?? null;
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);

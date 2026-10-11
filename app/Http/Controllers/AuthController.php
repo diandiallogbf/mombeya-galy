@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\Wishlist;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
+        Wishlist::mergeSessionInto(Auth::user());
 
         return redirect()->intended(route('account.index'))->with('success', 'Bienvenue, '.Auth::user()->name.' !');
     }
@@ -55,6 +57,7 @@ class AuthController extends Controller
 
         Auth::login($user, true);
         $request->session()->regenerate();
+        Wishlist::mergeSessionInto($user);
 
         return redirect()->intended(route('account.index'))->with('success', 'Votre compte a été créé avec succès.');
     }

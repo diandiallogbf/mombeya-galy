@@ -1,164 +1,276 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $atelierImage = setting('atelier_image') ? \App\Support\Media::url(setting('atelier_image')) : asset('images/atelier.svg');
+        $bento = $universes->reject(fn ($c) => $c->slug === 'promotion')->take(5)->values();
+        $otherUniverses = $universes->reject(fn ($c) => $bento->contains('id', $c->id));
+        $communityUrl = setting('whatsapp_community_url') ?: whatsapp_url('Bonjour, je souhaite rejoindre la communauté Mombeya Galy.');
+    @endphp
 
-    {{-- ============ HERO SLIDER ============ --}}
+    {{-- ============ HERO (split screen) ============ --}}
     @if ($slides->isNotEmpty())
-        <section class="swiper group/hero relative" data-hero>
+        <section class="swiper border-b border-line" data-hero>
             <div class="swiper-wrapper">
                 @foreach ($slides as $slide)
-                    {{-- "!" needed: Swiper's unlayered CSS sets .swiper-slide { height: 100% } --}}
-                    <div class="swiper-slide relative h-[300px]! overflow-hidden bg-navy sm:h-[400px]! lg:h-[520px]!">
-                        <img src="{{ $slide->imageUrl() }}" alt="{{ $slide->title }}" class="absolute inset-0 size-full object-cover" @if (! $loop->first) loading="lazy" @endif>
-                        @if ($slide->title || $slide->subtitle)
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent"></div>
-                            <div class="container-shop relative flex h-full items-center">
-                                <div class="max-w-xl text-white">
-                                    @if ($slide->title)
-                                        <h2 class="mb-3 text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-[3.25rem]">{{ $slide->title }}</h2>
-                                    @endif
-                                    @if ($slide->subtitle)
-                                        <p class="mb-6 text-base text-white/85 sm:text-lg">{{ $slide->subtitle }}</p>
-                                    @endif
+                    <div class="swiper-slide bg-ivory">
+                        <div class="container-shop grid items-center gap-8 py-10 md:grid-cols-12 md:gap-12 md:py-14">
+                            <div class="order-2 md:order-1 md:col-span-5">
+                                <p class="kicker mb-5">Mombeya Galy · Conakry</p>
+                                <h2 class="display-title mb-6 lg:text-7xl">{{ $slide->title ?: setting('shop_name') }}</h2>
+                                @if ($slide->subtitle)
+                                    <p class="mb-9 max-w-md text-[1.05rem] leading-relaxed text-body">{{ $slide->subtitle }}</p>
+                                @endif
+                                <div class="flex flex-wrap items-center gap-6">
                                     @if ($slide->button_text && $slide->button_link)
-                                        <a href="{{ $slide->button_link }}" class="btn btn-primary btn-shadow">{{ $slide->button_text }} <i class="fa-solid fa-arrow-right text-sm"></i></a>
+                                        <a href="{{ $slide->button_link }}" class="btn btn-dark">{{ $slide->button_text }}</a>
                                     @endif
+                                    <a href="{{ route('appointments.create') }}" class="link-arrow">Créer sur mesure <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
                                 </div>
                             </div>
-                        @endif
+                            <div class="order-1 md:order-2 md:col-span-7">
+                                <div class="overflow-hidden">
+                                    <img src="{{ $slide->imageUrl() }}" alt="{{ $slide->title }}" class="aspect-[4/3] w-full object-cover md:aspect-[5/4] lg:h-[620px] lg:aspect-auto" @if (! $loop->first) loading="lazy" @endif>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             </div>
-            <button type="button" data-prev aria-label="Précédent" class="absolute left-6 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-lg transition group-hover/hero:opacity-100 hover:bg-brand hover:text-white lg:flex">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button type="button" data-next aria-label="Suivant" class="absolute right-6 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-lg transition group-hover/hero:opacity-100 hover:bg-brand hover:text-white lg:flex">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-            <div class="swiper-pagination bottom-4! flex justify-center gap-1 lg:hidden!"></div>
+            @if ($slides->count() > 1)
+                <div class="container-shop pointer-events-none absolute inset-x-0 bottom-6 z-10 hidden md:block">
+                    <div class="pointer-events-auto flex items-center gap-5 md:w-5/12">
+                        <span class="font-display text-lg text-ink"><span data-counter>01</span> <span class="text-muted">/ {{ str_pad($slides->count(), 2, '0', STR_PAD_LEFT) }}</span></span>
+                        <div class="swiper-pagination static! flex w-auto! gap-1"></div>
+                        <div class="ml-auto flex gap-2">
+                            <button type="button" data-prev aria-label="Précédent" class="flex size-10 items-center justify-center rounded-full border border-ink text-ink hover:bg-ink hover:text-ivory"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                            <button type="button" data-next aria-label="Suivant" class="flex size-10 items-center justify-center rounded-full border border-ink text-ink hover:bg-ink hover:text-ivory"><i class="fa-solid fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </section>
     @endif
 
-    {{-- ============ CATEGORY TILES (desktop: overlapping card, 6 per row) ============ --}}
-    @if ($homeCategories->isNotEmpty())
-        <section class="container-shop relative z-10 hidden md:block lg:-mt-16">
-            <div class="mt-8 rounded-lg bg-white p-6 shadow-lg lg:mt-0">
-                <div class="grid grid-cols-4 gap-x-5 gap-y-6 lg:grid-cols-6">
-                    @foreach ($homeCategories as $homeCategory)
-                        <a href="{{ $homeCategory->slug === 'promotion' ? route('shop.promotions') : route('shop.category', $homeCategory) }}" class="group/tile block text-center">
-                            <div class="mb-3 overflow-hidden rounded-lg">
-                                <img src="{{ $homeCategory->imageUrl() }}" alt="{{ $homeCategory->name }}" loading="lazy" class="h-[220px] w-full object-cover transition duration-500 group-hover/tile:scale-105">
-                            </div>
-                            <h3 class="text-[.95rem] font-medium text-ink transition group-hover/tile:text-brand">{{ $homeCategory->name }}</h3>
-                        </a>
+    {{-- ============ REASSURANCE ============ --}}
+    <section class="border-b border-line bg-white">
+        <div class="container-shop grid grid-cols-2 divide-line md:grid-cols-4 md:divide-x">
+            @foreach ([
+                ['fa-earth-africa', 'Livraison internationale', 'Conakry en 24h, monde entier'],
+                ['fa-store', 'Retrait gratuit', 'Dans nos maisons de Conakry'],
+                ['fa-mobile-screen', 'Paiement mobile', 'Orange Money, MTN MoMo'],
+                ['fa-scissors', 'Sur mesure & pressing', 'Toute la chaîne, une seule maison'],
+            ] as [$icon, $title, $text])
+                <div class="flex items-center gap-4 px-2 py-6 md:px-6">
+                    <i class="fa-solid {{ $icon }} text-xl text-ink"></i>
+                    <div>
+                        <p class="text-[.72rem] font-medium tracking-[.14em] text-ink uppercase">{{ $title }}</p>
+                        <p class="text-xs text-muted">{{ $text }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    {{-- ============ NOS UNIVERS (bento) ============ --}}
+    @if ($bento->isNotEmpty())
+        <section class="container-shop mt-20 md:mt-28" data-reveal>
+            <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <p class="kicker mb-3">Collections</p>
+                    <h2 class="section-title">Nos univers</h2>
+                </div>
+                <a href="{{ route('shop.index') }}" class="link-arrow">Toute la boutique <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
+            </div>
+            <div class="grid grid-cols-2 gap-3 md:gap-4 lg:h-[680px] lg:grid-cols-4 lg:grid-rows-2">
+                @foreach ($bento as $universe)
+                    <a href="{{ route('shop.category', $universe) }}" @class([
+                        'group relative block overflow-hidden bg-sand',
+                        'col-span-2 aspect-[4/3] lg:row-span-2 lg:aspect-auto' => $loop->first,
+                        'aspect-[3/4] lg:aspect-auto' => ! $loop->first,
+                    ])>
+                        <img src="{{ $universe->imageUrl() }}" alt="{{ $universe->name }}" loading="lazy" class="absolute inset-0 size-full object-cover transition duration-[1.2s] group-hover:scale-105">
+                        <span class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent"></span>
+                        <span class="absolute bottom-5 left-5 right-5 text-ivory">
+                            <span @class(['block font-display leading-tight', 'text-3xl md:text-4xl' => $loop->first, 'text-xl md:text-2xl' => ! $loop->first])>{{ $universe->name }}</span>
+                            <span class="mt-1 inline-block text-[.65rem] tracking-[.22em] uppercase opacity-90">Découvrir →</span>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+            @if ($otherUniverses->isNotEmpty())
+                <div class="mt-6 flex flex-wrap gap-2">
+                    @foreach ($otherUniverses as $universe)
+                        <a href="{{ $universe->slug === 'promotion' ? route('shop.promotions') : route('shop.category', $universe) }}" class="chip">{{ $universe->name }}</a>
                     @endforeach
+                </div>
+            @endif
+        </section>
+    @endif
+
+    {{-- ============ LES INCONTOURNABLES ============ --}}
+    @if ($essentials->isNotEmpty())
+        <section class="mt-24 overflow-hidden md:mt-32" data-reveal>
+            <div class="container-shop">
+                <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="kicker mb-3">Les plus aimés</p>
+                        <h2 class="section-title">Les incontournables</h2>
+                    </div>
+                    <a href="{{ route('shop.index', ['tri' => 'populaire']) }}" class="link-arrow">Tout voir <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
+                </div>
+                <x-product-carousel :products="$essentials" />
+            </div>
+        </section>
+    @endif
+
+    {{-- ============ LA CHAÎNE COMPLÈTE ============ --}}
+    <section class="mt-24 bg-night py-20 text-ivory md:mt-32 md:py-28" data-reveal>
+        <div class="container-shop">
+            <div class="mx-auto mb-14 max-w-2xl text-center">
+                <p class="mb-4 text-[.7rem] tracking-[.28em] text-ivory/60 uppercase">Une maison, trois savoir-faire</p>
+                <h2 class="font-display text-4xl font-semibold text-ivory md:text-5xl">La chaîne complète</h2>
+                <p class="mt-5 text-ivory/70">De la prise de mesures à l'entretien de vos tenues, Mombeya Galy vous accompagne à chaque étape.</p>
+            </div>
+            <div class="grid gap-px bg-ivory/15 md:grid-cols-3">
+                @foreach ([
+                    ['01', 'Confection sur mesure', 'Nos tailleurs créent la tenue de vos grands moments : prise de mesures, choix du tissu, essayages.', route('appointments.create'), 'Prendre rendez-vous'],
+                    ['02', 'La boutique', 'Grands boubous, bazin, costumes africains et accessoires, prêts à porter et livrés partout.', route('shop.index'), 'Découvrir la boutique'],
+                    ['03', 'Le pressing', 'Lavage, amidonnage du bazin et repassage. Collecte et livraison à domicile.', route('pressing.index'), 'Voir les tarifs'],
+                ] as [$number, $title, $text, $link, $cta])
+                    <div class="flex flex-col bg-night p-8 md:p-10">
+                        <span class="mb-8 font-display text-5xl text-ivory/30">{{ $number }}</span>
+                        <h3 class="mb-3 font-display text-3xl text-ivory">{{ $title }}</h3>
+                        <p class="mb-8 flex-1 text-sm leading-relaxed text-ivory/70">{{ $text }}</p>
+                        <a href="{{ $link }}" class="inline-flex items-center gap-2 self-start border-b border-ivory/50 pb-0.5 text-[.72rem] tracking-[.18em] text-ivory uppercase transition hover:border-brand hover:text-brand">{{ $cta }} <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ============ NOUVELLE COLLECTION ============ --}}
+    @if ($newCollection->isNotEmpty())
+        <section class="container-shop mt-24 md:mt-32" data-reveal>
+            <div class="mb-12 text-center">
+                <p class="kicker mb-3">Fraîchement sorties de l'atelier</p>
+                <h2 class="section-title">Nouvelle collection</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+                @foreach ($newCollection as $product)
+                    <x-product-card :product="$product" />
+                @endforeach
+            </div>
+            <div class="mt-14 text-center">
+                <a href="{{ route('shop.news') }}" class="btn btn-outline">Voir toute la collection</a>
+            </div>
+        </section>
+    @endif
+
+    {{-- ============ NOTRE ATELIER ============ --}}
+    <section class="container-shop mt-24 grid items-center gap-10 md:mt-32 md:grid-cols-2 lg:gap-20" data-reveal>
+        <div class="overflow-hidden bg-sand">
+            <img src="{{ $atelierImage }}" alt="L'atelier Mombeya Galy" loading="lazy" class="aspect-[4/5] w-full object-cover">
+        </div>
+        <div>
+            <p class="kicker mb-4">Notre atelier</p>
+            <h2 class="section-title mb-6">{{ setting('atelier_title') }}</h2>
+            <p class="mb-10 text-[1.02rem] leading-relaxed text-body">{{ setting('atelier_text') }}</p>
+            <dl class="mb-10 grid grid-cols-3 gap-4 border-y border-line py-8">
+                <div><dt class="font-display text-4xl text-ink md:text-5xl">{{ setting('atelier_years') }}</dt><dd class="mt-1 text-xs tracking-[.12em] text-muted uppercase">ans de savoir-faire</dd></div>
+                <div><dt class="font-display text-4xl text-ink md:text-5xl">{{ setting('atelier_pieces') }}</dt><dd class="mt-1 text-xs tracking-[.12em] text-muted uppercase">pièces confectionnées</dd></div>
+                <div><dt class="font-display text-4xl text-ink md:text-5xl">{{ $showroomsCount }}</dt><dd class="mt-1 text-xs tracking-[.12em] text-muted uppercase">maisons</dd></div>
+            </dl>
+            <div class="flex flex-wrap items-center gap-6">
+                <a href="{{ route('appointments.create') }}" class="btn btn-dark">Prendre rendez-vous</a>
+                <a href="{{ route('showrooms') }}" class="link-arrow">Nos maisons <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============ ACCESSOIRES ============ --}}
+    @if ($accessories->isNotEmpty())
+        <section class="mt-24 overflow-hidden md:mt-32" data-reveal>
+            <div class="container-shop">
+                <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="kicker mb-3">Accessoires</p>
+                        <h2 class="section-title">Pour parfaire l'allure</h2>
+                    </div>
+                    <a href="{{ route('shop.category', 'accessoires') }}" class="link-arrow">Tous les accessoires <i class="fa-solid fa-arrow-right text-[.6rem]"></i></a>
+                </div>
+                <x-product-carousel :products="$accessories" />
+            </div>
+        </section>
+    @endif
+
+    {{-- ============ AVIS CLIENTS ============ --}}
+    @if ($testimonials->isNotEmpty())
+        <section class="mt-24 bg-sand py-20 md:mt-32" data-reveal>
+            <div class="container-shop">
+                <div class="mb-12 text-center">
+                    <p class="kicker mb-3">Avis clients</p>
+                    <h2 class="section-title">Ils nous font confiance</h2>
+                </div>
+                <div class="swiper" data-testimonials>
+                    <div class="swiper-wrapper">
+                        @foreach ($testimonials as $review)
+                            <figure class="swiper-slide h-auto! bg-white p-8">
+                                <div class="mb-5 flex gap-1 text-sm text-gold">
+                                    @for ($i = 1; $i <= 5; $i++)<i @class(['fa-star', 'fa-solid' => $i <= $review->rating, 'fa-regular' => $i > $review->rating])></i>@endfor
+                                </div>
+                                <blockquote class="mb-6 font-display text-xl leading-snug text-ink">« {{ \Illuminate\Support\Str::limit($review->comment, 220) }} »</blockquote>
+                                <figcaption class="text-sm">
+                                    <span class="font-medium text-ink">{{ $review->displayName() }}</span>
+                                    @if ($review->product)
+                                        <span class="text-muted"> · <a href="{{ route('product.show', $review->product) }}" class="hover:text-brand">{{ $review->product->name }}</a></span>
+                                    @endif
+                                </figcaption>
+                            </figure>
+                        @endforeach
+                    </div>
+                    <div class="swiper-pagination static! mt-10 flex justify-center gap-1"></div>
                 </div>
             </div>
         </section>
+    @endif
 
-        {{-- Mobile: horizontally scrollable tiles --}}
-        <section class="mt-6 md:hidden">
-            <div class="flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
-                @foreach ($homeCategories as $homeCategory)
-                    <a href="{{ $homeCategory->slug === 'promotion' ? route('shop.promotions') : route('shop.category', $homeCategory) }}" class="w-28 shrink-0 snap-start text-center">
-                        <img src="{{ $homeCategory->imageUrl() }}" alt="{{ $homeCategory->name }}" loading="lazy" class="mb-2 h-36 w-full rounded-lg object-cover">
-                        <span class="line-clamp-2 text-xs font-medium text-ink">{{ $homeCategory->name }}</span>
+    {{-- ============ PORTÉS PAR VOUS ============ --}}
+    @if ($gallery->isNotEmpty())
+        <section class="container-shop mt-24 md:mt-32" data-reveal>
+            <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <p class="kicker mb-3">#MombeyaGaly</p>
+                    <h2 class="section-title">Portés par vous</h2>
+                </div>
+                @if (setting('instagram_url'))
+                    <a href="{{ setting('instagram_url') }}" target="_blank" rel="noopener" class="link-arrow"><i class="fa-brands fa-instagram"></i> Suivez-nous</a>
+                @endif
+            </div>
+            <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+                @foreach ($gallery as $photo)
+                    <a href="{{ $photo->link ?: (setting('instagram_url') ?: '#') }}" @if ($photo->link || setting('instagram_url')) target="_blank" rel="noopener" @endif class="group relative block aspect-square overflow-hidden bg-sand">
+                        <img src="{{ $photo->imageUrl() }}" alt="{{ $photo->caption }}" loading="lazy" class="size-full object-cover transition duration-700 group-hover:scale-105">
+                        @if ($photo->caption)
+                            <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 text-sm text-ivory opacity-0 transition group-hover:opacity-100">{{ $photo->caption }}</span>
+                        @endif
                     </a>
                 @endforeach
             </div>
         </section>
     @endif
 
-    {{-- ============ TENDANCE DE LA SEMAINE ============ --}}
-    @if ($trendWeek->isNotEmpty())
-        <section class="container-shop mt-10">
-            <h2 class="mb-5 flex items-center gap-2 text-lg font-medium text-ink"><i class="fa-solid fa-bullhorn text-brand"></i> Tendance de la semaine</h2>
-            <x-product-carousel :products="$trendWeek" />
-        </section>
-    @endif
-
-    {{-- ============ INFO ROW: showrooms + online order / DHL ============ --}}
-    <section class="container-shop mt-10 grid gap-5 md:grid-cols-3">
-        <a href="{{ route('showrooms') }}" class="group/sr flex items-center gap-5 rounded-lg border border-line p-6 transition hover:border-brand hover:shadow-card">
-            <span class="flex size-16 shrink-0 items-center justify-center rounded-full bg-brand-light text-3xl text-brand"><i class="fa-solid fa-location-dot"></i></span>
-            <span>
-                <span class="mb-1 block text-lg font-bold text-ink">Nos showrooms</span>
-                <span class="block text-sm text-body"><i class="fa-regular fa-eye mr-1 text-brand"></i> Voir la liste de nos showrooms</span>
-                <span class="block text-sm text-body"><i class="fa-solid fa-map mr-1 text-brand"></i> Sur la carte</span>
-            </span>
-        </a>
-
-        <div class="flex flex-col items-center gap-5 overflow-hidden rounded-lg bg-soft p-6 sm:flex-row md:col-span-2">
-            <div class="hidden flex-1 lg:block">
-                <h4 class="mb-4 text-xl font-light text-ink">Commandez et payez vos articles en ligne.</h4>
-                <a href="{{ route('shop.index') }}" class="btn btn-primary btn-shadow btn-sm">Commander maintenant</a>
+    {{-- ============ COMMUNAUTÉ ============ --}}
+    <section class="container-shop mt-24 md:mt-32" data-reveal>
+        <div class="grid items-center gap-8 border border-line bg-white px-6 py-12 text-center md:grid-cols-2 md:px-14 md:text-left">
+            <div>
+                <p class="kicker mb-3">Communauté</p>
+                <h2 class="section-title">Rejoignez le cercle Mombeya Galy</h2>
             </div>
-            <div class="relative flex w-full flex-1 items-center gap-4 overflow-hidden rounded-lg bg-gradient-to-r from-navy to-ocean px-5 py-4 text-white lg:max-w-md">
-                <i class="fa-solid fa-plane-departure text-4xl text-azure"></i>
-                <div class="leading-tight">
-                    <div class="text-xs font-bold uppercase tracking-wider text-azure">Livraison internationale</div>
-                    <div class="text-xl font-black italic">en moins de 5 jours</div>
-                    <div class="text-xs text-white/70">Hors Guinée · Envoi express par DHL</div>
-                </div>
-            </div>
-        </div>
-
-        <a href="{{ route('shop.prestige') }}" class="flex items-center gap-4 rounded-lg bg-navy p-5 text-white md:hidden">
-            <i class="fa-solid fa-award text-3xl text-azure"></i>
-            <span>
-                <span class="block font-bold text-white">MOMBEYA GALY PRESTIGE</span>
-                <span class="text-sm text-white/70"><i class="fa-regular fa-eye"></i> Voir les produits prestige</span>
-            </span>
-        </a>
-    </section>
-
-    {{-- ============ PRESSING ============ --}}
-    <section class="container-shop mt-10">
-        <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-navy to-ocean px-6 py-8 text-white md:px-10">
-            <div class="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-azure/20"></div>
-            <div class="relative flex flex-col items-start gap-6 md:flex-row md:items-center">
-                <span class="flex size-16 shrink-0 items-center justify-center rounded-full bg-white/10 text-3xl"><i class="fa-solid fa-soap"></i></span>
-                <div class="flex-1">
-                    <p class="text-xs font-bold uppercase tracking-[.2em] text-azure">Nouveau · Mombeya Galy Pressing</p>
-                    <h2 class="mt-1 text-2xl font-medium text-white">Vos tenues lavées, amidonnées et repassées</h2>
-                    <p class="mt-1 text-sm text-white/75">
-                        @if ($pressingZones->isNotEmpty())
-                            Collecte et livraison à domicile à {{ $pressingZones->join(', ', ' et ') }} ·
-                        @endif
-                        Dépôt gratuit en showroom · Prêt en {{ setting('pressing_delay_text') }}
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <a href="{{ route('pressing.create') }}" class="btn btn-primary btn-sm">Réserver un enlèvement</a>
-                    <a href="{{ route('pressing.index') }}" class="btn btn-sm border border-white/40 text-white hover:bg-white hover:text-navy">Voir les tarifs</a>
-                </div>
+            <div class="md:justify-self-end">
+                <p class="mb-6 text-body">Nouvelles collections, offres privées et conseils de style, directement sur WhatsApp.</p>
+                <a href="{{ $communityUrl }}" target="_blank" rel="noopener" class="btn bg-[#25D366] text-white hover:bg-[#1da851]"><i class="fa-brands fa-whatsapp text-base"></i> Rejoindre la communauté</a>
             </div>
         </div>
     </section>
-
-    {{-- ============ TENDANCE DU MOIS ============ --}}
-    @if ($trendMonth->isNotEmpty())
-        <section class="container-shop mt-14">
-            <h2 class="section-title">Tendance du mois</h2>
-            <p class="mt-1 text-center text-[.95rem] text-muted">Découvrez ici les dernières créations de Mombeya Galy</p>
-            <hr class="my-6 border-line">
-            <div class="grid grid-cols-2 gap-x-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
-                @foreach ($trendMonth as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-            <div class="mt-10 text-center">
-                <a href="{{ route('shop.index') }}" class="btn btn-outline">Voir la boutique <i class="fa-solid fa-arrow-right text-sm"></i></a>
-            </div>
-        </section>
-    @endif
-
-    {{-- ============ ACCESSOIRES ============ --}}
-    @if ($accessories->isNotEmpty())
-        <section class="container-shop mt-16">
-            <h2 class="section-title mb-6">Accessoires Mombeya Galy</h2>
-            <x-product-carousel :products="$accessories" />
-        </section>
-    @endif
-
 @endsection
